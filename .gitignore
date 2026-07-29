@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+.DS_Store
+
+# Milvus / RAG database
+huggingface_rag.db/
+*.arrow
+*.parquet
+*.npz
+*.npy
+*.pkl
+*.index
+*.db
+*.bin
+*.lock
+LOCK
