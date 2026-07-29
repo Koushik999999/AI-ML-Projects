@@ -1,134 +1,253 @@
-# 🛍️ Amazon Recommendation System
+# Amazon Product Recommendation System
 
-A **hybrid recommendation engine** (Content-Based + Collaborative Filtering) designed using publicly available Amazon product and user behavior data.
+## Project Overview
 
----
+Developed an end-to-end **Product Recommendation System** using Amazon product data to deliver personalized recommendations through **Content-Based Filtering**, **Collaborative Filtering**, and a **Hybrid Recommendation Engine**.
 
-## 📁 Dataset
-
-**Link:** [Download from Google Drive](https://drive.google.com/file/d/1OA0wOG1epBxHAMNXun7kwNr_QsupUMzj/view?usp=sharing)
+The project follows a real-world machine learning workflow, beginning with data understanding and preprocessing, followed by exploratory data analysis, feature engineering, recommendation modeling, evaluation, and business recommendations.
 
 ---
 
-## 🧠 Problem Statement
+## Business Problem
 
-> Build and evaluate a hybrid recommendation engine for an e-commerce platform using product metadata and user behavior data.
+Large e-commerce platforms contain millions of products, making it difficult for customers to discover relevant items.
 
----
+The objective of this project is to build an intelligent recommendation system capable of:
 
-## 🧹 Section A: Data Understanding & Cleaning
-
-### 🔍 a) Understand the Dataset
-
-- Total number of unique:
-  - Users
-  - Products
-  - Reviews
-- Top 5 categories by number of products
-- Price range and discount insights
-
-### 🧽 b) Clean & Preprocess the Data
-
-1. Convert prices to numeric format
-2. Parse categories into hierarchy levels (e.g., `category_level_1`, `category_level_2`, ...)
-3. Normalize rating scores and count outliers
-4. Create derived features:
-   - `price_difference`
-   - `value_for_money_score`
-   - `weighted_rating`
-5. Handle:
-   - Missing values or anomalies
-   - Duplicates or invalid records
-   - Missing ratings/reviews with appropriate imputation strategy
+- Recommending similar products
+- Personalizing recommendations for users
+- Handling cold-start products
+- Improving product discovery
+- Increasing customer engagement and conversion
 
 ---
 
-## 📊 Section B: Exploratory Data Analysis (EDA)
+## Dataset
 
-> Think like a **Product Analyst** identifying buying patterns.
+Amazon Product Dataset containing:
 
-### 📈 Visualizations
+- Product Information
+- Product Categories
+- Product Descriptions
+- Product Ratings
+- Rating Counts
+- User IDs
+- Product IDs
+- Prices
+- Discount Percentages
 
+---
+
+## Project Workflow
+
+```
+Data Collection
+        │
+        ▼
+Data Cleaning & Preprocessing
+        │
+        ▼
+Exploratory Data Analysis
+        │
+        ▼
+Feature Engineering
+        │
+        ▼
+Content-Based Filtering
+        │
+        ▼
+Collaborative Filtering
+        │
+        ▼
+Hybrid Recommendation System
+        │
+        ▼
+Evaluation & Business Insights
+```
+
+---
+
+# Data Preprocessing
+
+Performed several preprocessing steps including:
+
+- Missing value handling
+- Price conversion to numeric values
+- Category hierarchy extraction
+- Rating normalization
+- Outlier detection using IQR
+- Feature scaling
+- Derived feature generation
+
+Created engineered features such as:
+
+- Price Difference
+- Value-for-Money Score
+- Normalized Rating
+- Discount Percentage
+- Category Levels
+
+---
+
+# Exploratory Data Analysis
+
+Performed detailed business analysis including:
+
+- Product distribution across categories
 - Most reviewed products
-- Top 10 categories by number of products
-- Average rating per category
-- Correlation: Discounts vs Actual Price
+- Average ratings by category
+- Discount analysis
+- Rating distribution
+- Price vs Discount relationship
+- Rating vs Review Count correlation
+- High-rated but under-reviewed products
 
-### 👥 User Engagement Insights
+Generated multiple visualizations using:
 
-- Which products have high ratings but few reviews?
-- Are highly rated products also heavily reviewed?
-
-### 💡 Actionable Insights
-
-Generate 3 strategic insights for **Amazon's product strategy** based on EDA findings.
-
----
-
-## 🧾 Section C: Content-Based Filtering
-
-> Think like a **Content Engineer** personalizing feeds using product metadata.
-
-### 🧠 Steps
-
-1. Vectorize product text:
-   - Use `product_name + about_product`
-   - Techniques: **TF-IDF**, **word embeddings**, etc.
-2. Build a **product similarity matrix**
-3. Recommend top 5 similar products for:
-   - A new product with no reviews (cold-start)
-   - A poorly-rated product with high dropout
-
-### 🎯 Enhance Content Vectors
-
-Include additional metadata:
-- Category
-- Price
-- Discount
-
-### 📈 Evaluate Recommendations
-
-- Are they diverse and relevant?
+- Bar Charts
+- Histograms
+- Correlation Analysis
+- Box Plots
 
 ---
 
-## 🤝 Section D: Collaborative Filtering (User–Item)
+# Recommendation Models
 
-> You're now a **Machine Learning Engineer** leveraging user behavior.
+## 1. Content-Based Filtering
 
-### 🧠 Steps
+Built a recommendation engine using:
 
-1. Create a **User–Item matrix** using `user_id`, `product_id`, and `rating`
-2. Apply:
-   - **User–User Collaborative Filtering** (cosine similarity)
-   - OR **Item–Item Collaborative Filtering** (cosine or Pearson)
+- TF-IDF Vectorization
+- Product Name
+- Product Description
+- Cosine Similarity
 
-### 🔄 Recommendations
+Capabilities:
 
-- Recommend top 5 **unseen products per user**
+- Similar Product Recommendation
+- New Product Recommendation
+- Cold Start Product Support
 
 ---
 
-## ⚡ Section E: Hybrid Recommender (Content + Collaborative)
+## 2. Collaborative Filtering
 
-> You're the **Senior ML Engineer** combining strengths of both models.
+Implemented Item-Based Collaborative Filtering using:
 
-### 🧪 Strategy
+- User-Item Matrix
+- Cosine Similarity
+- Item Similarity Matrix
 
-- **Score Fusion**:  
-  `Final Score = 0.6 * CollaborativeFiltering + 0.4 * ContentBased`
+Capabilities:
 
-### 📊 Evaluation
+- Personalized User Recommendations
+- Top-N Product Recommendation
 
-Compare performance across:
+---
 
-- Individual vs. Hybrid methods
-- **Cold-start product** (new product)
-- **Cold-start user** (very few reviews)
+## 3. Hybrid Recommendation System
 
-### 🚀 Suggestions for Real-World Optimization
+Combined:
 
-- Incorporate:
-  - Product Popularity
-  - Recent Purchases
-  - Product Availability
+- Content-Based Scores
+- Collaborative Filtering Scores
+
+to improve recommendation quality.
+
+The hybrid model helps:
+
+- Reduce cold-start problems
+- Improve recommendation accuracy
+- Increase recommendation diversity
+
+---
+
+# Model Evaluation
+
+Evaluated recommendation quality using:
+
+- Cosine Similarity
+- Recommendation Relevance
+- Recommendation Diversity
+- User Preference Matching
+
+---
+
+# Technologies Used
+
+- Python
+- Pandas
+- NumPy
+- Matplotlib
+- Seaborn
+- Scikit-learn
+- SciPy
+- TF-IDF Vectorizer
+- Cosine Similarity
+- Jupyter Notebook
+
+---
+
+# Business Insights
+
+Some key findings include:
+
+- Product ratings and review counts show only weak correlation.
+- Mid-range products often receive competitive discounts.
+- Computer accessories attract the highest review volume.
+- Content-based filtering effectively recommends similar products.
+- Collaborative filtering personalizes recommendations using user interactions.
+- Hybrid recommendations improve overall recommendation quality and mitigate cold-start issues.
+
+---
+
+# Skills Demonstrated
+
+- Exploratory Data Analysis
+- Data Cleaning
+- Feature Engineering
+- Recommendation Systems
+- Content-Based Filtering
+- Collaborative Filtering
+- Hybrid Recommender Systems
+- Cosine Similarity
+- TF-IDF
+- Machine Learning
+- Business Analytics
+
+---
+
+# Repository Structure
+
+```
+Amazon_Product_Recommendation_System/
+│
+├── Amazon_Recommendation_System.ipynb
+├── amazon.csv
+├── README.md
+```
+
+---
+
+# Future Improvements
+
+- Matrix Factorization (SVD)
+- Neural Collaborative Filtering
+- Deep Learning Recommenders
+- Two-Tower Recommendation Models
+- Session-Based Recommendations
+- Real-Time Recommendation APIs
+- Implicit Feedback Modeling
+- Explainable Recommendations
+
+---
+
+# Author
+
+**Koushik Jayanthi**
+
+Software Engineer | AI & Machine Learning | Java Backend Developer
+
+**LinkedIn**: https://www.linkedin.com/in/koushik-jayanthi-2b86b5153/
+
+**GitHub**: https://github.com/Koushik999999

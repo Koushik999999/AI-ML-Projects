@@ -9,95 +9,79 @@ This repository contains a growing collection of **end-to-end AI projects** buil
 
 ---
 
+---
+
 # Project Portfolio
 
 | Project | Problem Type | Domain | Techniques | Status |
 |----------|-------------|--------|------------|:------:|
-| 📢 **Ad Targeting Optimization** | Customer Segmentation | Digital Marketing | K-Means, Autoencoder, Deep Learning | ✅ |
-| 🌱 **CO₂ Emission Prediction** | Regression | Sustainability | Regression, Feature Engineering | ✅ |
-| 🌍 **Global Development Strategy** | Country Segmentation | Public Policy | PCA, K-Means, Hierarchical Clustering | ✅ |
-| ▶️ **YouTube Shorts Performance Prediction** | Classification | Social Media Analytics | Logistic Regression, Random Forest, KNN, SVM | ✅ |
-| 🤖 **Domain Specific RAG** | Retrieval-Augmented Generation | Generative AI | LangChain, Hugging Face, Milvus, Vector Search | ✅ |
-| 🚧 **More Projects Coming Soon...** | LLMs • Computer Vision • Agentic AI • MLOps | AI | In Progress | 🚀 |
+| 📢 **Ad Targeting Customer Segmentation** | Customer Segmentation | Digital Marketing | K-Means, Autoencoder, Deep Learning | ✅ |
+| 🌱 **Carbon Emission Prediction** | Regression | Sustainability | Linear Regression, Ensemble Models, Feature Engineering | ✅ |
+| 🌍 **Global Development Country Segmentation** | Customer/Country Segmentation | Public Policy | PCA, K-Means, Hierarchical Clustering | ✅ |
+| ▶️ **YouTube Shorts Engagement Prediction** | Classification | Social Media Analytics | Logistic Regression, Random Forest, KNN, SVM | ✅ |
+| 🛒 **Ecommerce Customer Analytics** | Business Analytics | E-commerce | RFM Analysis, Cohort Analysis, CLV, Statistical Analysis | ✅ |
+| ⭐ **Amazon Product Recommendation System** | Recommendation System | E-commerce | TF-IDF, Content-Based Filtering, Collaborative Filtering, Hybrid Recommender | ✅ |
+| 🤖 **Domain Specific RAG** *(In Progress)* | Retrieval-Augmented Generation | Generative AI | LangChain, Hugging Face, Milvus, Vector Search | 🚧 |
+| 🚀 **More Projects Coming Soon...** | LLMs • Computer Vision • Agentic AI • MLOps | AI | In Progress | 🚀 |
 
 ---
 
 # Repository Structure
 
-```
+```text
 AI-ML-Projects/
 │
-├── Ad_Targeting_System/
+├── Ad_Targeting_Customer_Segmentation/
 │   ├── README.md
 │   ├── Notebook
 │   └── Reports
 │
-├── Carbon_Emission/
+├── Carbon_Emission_Prediction/
 │   ├── README.md
 │   ├── Notebook
 │   └── Reports
 │
-├── Global_Development_Strategy/
+├── Global_Development_Country_Segmentation/
 │   ├── README.md
 │   ├── Notebook
 │   └── Reports
 │
-├── Youtube_Shorts_Performance/
+├── YouTube_Shorts_Engagement_Prediction/
 │   ├── README.md
 │   ├── Notebook
 │   └── Reports
+│
+├── Ecommerce_Customer_Analytics/
+│   ├── README.md
+│   ├── Notebook
+│   └── Reports
+│
+├── Amazon_Product_Recommendation_System/
+│   ├── README.md
+│   ├── Notebook
+│   └── Dataset
 │
 ├── Domain_Specific_RAG/
 │   ├── README.md
-│   └── Notebook
+│   ├── Notebook
+│   └── (Work in Progress)
 │
 └── README.md
 ```
 
 ---
 
-# AI & Machine Learning Skills
+## Core AI/ML Skills Covered
 
-### Machine Learning
+**Machine Learning:** Regression • Classification • Clustering • Recommendation Systems
 
-- Regression
-- Classification
-- Clustering
-- Dimensionality Reduction
-- Feature Engineering
-- Model Evaluation
-- Hyperparameter Tuning
+**Deep Learning:** Autoencoders • Neural Networks
 
-### Deep Learning
+**NLP & Generative AI:** Retrieval-Augmented Generation (RAG) • Vector Databases • Embeddings
 
-- Artificial Neural Networks
-- Autoencoders
-- Representation Learning
+**Data Science:** EDA • Feature Engineering • Statistical Analysis • Business Analytics
 
-### Natural Language Processing
-
-- Text Embeddings
-- Semantic Search
-- Transformers
-- Retrieval-Augmented Generation (RAG)
-
-### Data Science
-
-- Data Cleaning
-- Exploratory Data Analysis (EDA)
-- Data Visualization
-- Statistical Analysis
-- Business Analytics
-
-### MLOps & AI Engineering
-
-- Model Pipelines
-- Vector Databases
-- LangChain
-- Hugging Face
-- Git & GitHub
-
----
+**MLOps & Tools:** Scikit-learn • TensorFlow • Hugging Face • LangChain • Milvus • Pandas • NumPy
 
 # Tech Stack
 
