@@ -259,6 +259,6 @@ Ad_Targeting_System/
 
 Software Engineer | AI & Machine Learning | Java Backend Developer
 
-LinkedIn: *(Add your profile)*
+[LinkedIn: Koushik Jayanthi](https://www.linkedin.com/in/koushik-jayanthi-2b86b5153/)
 
-GitHub: *(Add your GitHub profile)*
+[GitHub: Koushik999999](https://github.com/Koushik999999)
