@@ -22,7 +22,8 @@ This repository contains a growing collection of **end-to-end AI projects** buil
 | 🛒 **Ecommerce Customer Analytics** | Business Analytics | E-commerce | RFM Analysis, Cohort Analysis, CLV, Statistical Analysis | ✅ |
 | ⭐ **Amazon Product Recommendation System** | Recommendation System | E-commerce | TF-IDF, Content-Based Filtering, Collaborative Filtering, Hybrid Recommender | ✅ |
 | 🤖 **Domain Specific RAG** *(In Progress)* | Retrieval-Augmented Generation | Generative AI | LangChain, Hugging Face, Milvus, Vector Search | 🚧 |
-| 🚀 **More Projects Coming Soon...** | LLMs • Computer Vision • Agentic AI • MLOps | AI | In Progress | 🚀 |
+| 🧠 **MCP SQL Agent** | Agentic Text-to-SQL | Agentic AI / Generative AI | MCP, ReAct Agent, Tool Calling, GPT-OSS-20B, Groq, SQLite | ✅ |
+| 🚀 **More Projects Coming Soon...** | Computer Vision • Agentic AI • MLOps | AI | In Progress | 🚀 |
 
 ---
 
@@ -66,6 +67,20 @@ AI-ML-Projects/
 │   ├── Notebook
 │   └── (Work in Progress)
 │
+├── mcp-text2sql/
+│   ├── README.md
+│   ├── data/
+│   │   └── sample.db
+│   ├── scripts/
+│   │   └── setup_db.py
+│   ├── src/
+│   │   ├── agent.py
+│   │   ├── mcp_client.py
+│   │   └── mcp_server.py
+│   ├── tests/
+│   ├── pyproject.toml
+│   └── uv.lock
+│
 └── README.md
 ```
 
@@ -77,11 +92,15 @@ AI-ML-Projects/
 
 **Deep Learning:** Autoencoders • Neural Networks
 
-**NLP & Generative AI:** Retrieval-Augmented Generation (RAG) • Vector Databases • Embeddings
+**NLP & Generative AI:** Retrieval-Augmented Generation (RAG) • Vector Databases • Embeddings • Text-to-SQL • Large Language Models
+
+**Agentic AI:** Model Context Protocol (MCP) • ReAct Agents • Tool Calling • MCP Client/Server Architecture • MCP Tools • MCP Resources • MCP Prompts • LLM-Driven Database Interaction
 
 **Data Science:** EDA • Feature Engineering • Statistical Analysis • Business Analytics
 
-**MLOps & Tools:** Scikit-learn • TensorFlow • Hugging Face • LangChain • Milvus • Pandas • NumPy
+**MLOps & Tools:** Scikit-learn • TensorFlow • Hugging Face • LangChain • Milvus • Groq • FastMCP • Pandas • NumPy • uv
+
+---
 
 # Tech Stack
 
@@ -91,10 +110,13 @@ AI-ML-Projects/
 | Data Analysis | Pandas, NumPy |
 | Machine Learning | Scikit-Learn |
 | Deep Learning | TensorFlow, Keras |
-| NLP / LLM | Hugging Face, Sentence Transformers, LangChain |
+| NLP / LLM | Hugging Face, Sentence Transformers, LangChain, GPT-OSS |
+| Agentic AI | Model Context Protocol (MCP), FastMCP, ReAct, LLM Tool Calling |
+| LLM Inference | Groq |
 | Vector Database | Milvus |
+| Relational Database | SQLite |
 | Visualization | Matplotlib, Seaborn |
-| Development | Jupyter Notebook, VS Code, Git, GitHub |
+| Development | Jupyter Notebook, VS Code, Git, GitHub, uv |
 
 ---
 

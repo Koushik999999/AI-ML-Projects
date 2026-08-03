@@ -5,6 +5,8 @@ __pycache__/
 venv/
 .env
 .DS_Store
+.toml
+.python-version
 
 # Milvus / RAG database
 huggingface_rag.db/
