@@ -23,7 +23,7 @@ This repository contains a growing collection of **end-to-end AI projects** buil
 | ⭐ **Amazon Product Recommendation System** | Recommendation System | E-commerce | TF-IDF, Content-Based Filtering, Collaborative Filtering, Hybrid Recommender | ✅ |
 | 🤖 **Domain Specific RAG** *(In Progress)* | Retrieval-Augmented Generation | Generative AI | LangChain, Hugging Face, Milvus, Vector Search | 🚧 |
 | 🧠 **MCP SQL Agent** | Agentic Text-to-SQL | Agentic AI / Generative AI | MCP, ReAct Agent, Tool Calling, GPT-OSS-20B, Groq, SQLite | ✅ |
-| 🚀 **More Projects Coming Soon...** | Computer Vision • Agentic AI • MLOps | AI | In Progress | 🚀 |
+| 🔧 **TinyLlama LoRA Instruction Tuning** | Parameter-Efficient Fine-Tuning | Generative AI / LLM | LoRA, PEFT, SFT, TRL, TinyLlama, Dolly-15K | ✅ |
 
 ---
 
@@ -67,7 +67,7 @@ AI-ML-Projects/
 │   ├── Notebook
 │   └── (Work in Progress)
 │
-├── mcp-text2sql/
+├── MCP-SQL-Agent/
 │   ├── README.md
 │   ├── data/
 │   │   └── sample.db
@@ -81,6 +81,11 @@ AI-ML-Projects/
 │   ├── pyproject.toml
 │   └── uv.lock
 │
+├── TinyLlama_LoRA_Instruction_Tuning/
+│   ├── README.md
+│   ├── TinyLlama_LoRA_FineTuning.ipynb
+│   └── TinyLlama_LoRA_FineTuning.pdf
+│
 └── README.md
 ```
 
@@ -92,13 +97,15 @@ AI-ML-Projects/
 
 **Deep Learning:** Autoencoders • Neural Networks
 
-**NLP & Generative AI:** Retrieval-Augmented Generation (RAG) • Vector Databases • Embeddings • Text-to-SQL • Large Language Models
+**NLP & Generative AI:** Retrieval-Augmented Generation (RAG) • Vector Databases • Embeddings • Text-to-SQL • Large Language Models • Instruction Tuning • Supervised Fine-Tuning (SFT)
+
+**LLM Fine-Tuning:** LoRA • Parameter-Efficient Fine-Tuning (PEFT) • Attention Projection Targeting • Gradient Checkpointing • Gradient Accumulation • Mixed-Precision Training • Adapter-Based Fine-Tuning
 
 **Agentic AI:** Model Context Protocol (MCP) • ReAct Agents • Tool Calling • MCP Client/Server Architecture • MCP Tools • MCP Resources • MCP Prompts • LLM-Driven Database Interaction
 
 **Data Science:** EDA • Feature Engineering • Statistical Analysis • Business Analytics
 
-**MLOps & Tools:** Scikit-learn • TensorFlow • Hugging Face • LangChain • Milvus • Groq • FastMCP • Pandas • NumPy • uv
+**MLOps & Tools:** Scikit-learn • TensorFlow • PyTorch • Hugging Face Transformers • PEFT • TRL • Datasets • LangChain • Milvus • Groq • FastMCP • Pandas • NumPy • uv
 
 ---
 
@@ -109,14 +116,16 @@ AI-ML-Projects/
 | Programming | Python |
 | Data Analysis | Pandas, NumPy |
 | Machine Learning | Scikit-Learn |
-| Deep Learning | TensorFlow, Keras |
-| NLP / LLM | Hugging Face, Sentence Transformers, LangChain, GPT-OSS |
+| Deep Learning | PyTorch, TensorFlow, Keras |
+| NLP / LLM | Hugging Face Transformers, Sentence Transformers, LangChain, TinyLlama, GPT-OSS |
+| LLM Fine-Tuning | LoRA, PEFT, TRL, Supervised Fine-Tuning (SFT) |
 | Agentic AI | Model Context Protocol (MCP), FastMCP, ReAct, LLM Tool Calling |
 | LLM Inference | Groq |
 | Vector Database | Milvus |
 | Relational Database | SQLite |
 | Visualization | Matplotlib, Seaborn |
-| Development | Jupyter Notebook, VS Code, Git, GitHub, uv |
+| GPU / Acceleration | CUDA, Mixed Precision (FP16/BF16) |
+| Development | Jupyter Notebook, Google Colab, VS Code, Git, GitHub, uv |
 
 ---
 
