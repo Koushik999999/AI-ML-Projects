@@ -7,6 +7,7 @@ venv/
 .DS_Store
 .toml
 .python-version
+.html
 
 # Milvus / RAG database
 huggingface_rag.db/
