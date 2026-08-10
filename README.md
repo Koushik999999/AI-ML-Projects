@@ -13,17 +13,17 @@ This repository contains a growing collection of **end-to-end AI projects** buil
 
 # Project Portfolio
 
-| Project | Problem Type | Domain | Techniques | Status |
-|----------|-------------|--------|------------|:------:|
-| 📢 **Ad Targeting Customer Segmentation** | Customer Segmentation | Digital Marketing | K-Means, Autoencoder, Deep Learning | ✅ |
-| 🌱 **Carbon Emission Prediction** | Regression | Sustainability | Linear Regression, Ensemble Models, Feature Engineering | ✅ |
-| 🌍 **Global Development Country Segmentation** | Customer/Country Segmentation | Public Policy | PCA, K-Means, Hierarchical Clustering | ✅ |
-| ▶️ **YouTube Shorts Engagement Prediction** | Classification | Social Media Analytics | Logistic Regression, Random Forest, KNN, SVM | ✅ |
-| 🛒 **Ecommerce Customer Analytics** | Business Analytics | E-commerce | RFM Analysis, Cohort Analysis, CLV, Statistical Analysis | ✅ |
-| ⭐ **Amazon Product Recommendation System** | Recommendation System | E-commerce | TF-IDF, Content-Based Filtering, Collaborative Filtering, Hybrid Recommender | ✅ |
-| 🤖 **Domain Specific RAG** *(In Progress)* | Retrieval-Augmented Generation | Generative AI | LangChain, Hugging Face, Milvus, Vector Search | 🚧 |
-| 🧠 **MCP SQL Agent** | Agentic Text-to-SQL | Agentic AI / Generative AI | MCP, ReAct Agent, Tool Calling, GPT-OSS-20B, Groq, SQLite | ✅ |
-| 🔧 **TinyLlama LoRA Instruction Tuning** | Parameter-Efficient Fine-Tuning | Generative AI / LLM | LoRA, PEFT, SFT, TRL, TinyLlama, Dolly-15K | ✅ |
+| Project                                        | Problem Type                    | Domain                     | Techniques                                                                     | Status |
+| ---------------------------------------------- | ------------------------------- | -------------------------- | ------------------------------------------------------------------------------ | :----: |
+| 📢 **Ad Targeting Customer Segmentation**      | Customer Segmentation           | Digital Marketing          | K-Means, Autoencoder, Deep Learning                                            |    ✅   |
+| 🌱 **Carbon Emission Prediction**              | Regression                      | Sustainability             | Linear Regression, Ensemble Models, Feature Engineering                        |    ✅   |
+| 🌍 **Global Development Country Segmentation** | Country Segmentation            | Public Policy              | PCA, K-Means, Hierarchical Clustering                                          |    ✅   |
+| ▶️ **YouTube Shorts Engagement Prediction**    | Classification                  | Social Media Analytics     | Logistic Regression, Random Forest, KNN, SVM                                   |    ✅   |
+| 🛒 **Ecommerce Customer Analytics**            | Business Analytics              | E-commerce                 | RFM Analysis, Cohort Analysis, CLV, Statistical Analysis                       |    ✅   |
+| ⭐ **Amazon Product Recommendation System**     | Recommendation System           | E-commerce                 | TF-IDF, Content-Based Filtering, Collaborative Filtering, Hybrid Recommender   |    ✅   |
+| 🤖 **Domain-Specific RAG Pipeline**            | Retrieval-Augmented Generation  | Generative AI              | BGE Embeddings, Milvus, Semantic Search, Hugging Face Transformers, Phi-3 Mini |    ✅   |
+| 🧠 **MCP SQL Agent**                           | Agentic Text-to-SQL             | Agentic AI / Generative AI | MCP, ReAct Agent, Tool Calling, GPT-OSS-20B, Groq, SQLite                      |    ✅   |
+| 🔧 **TinyLlama LoRA Instruction Tuning**       | Parameter-Efficient Fine-Tuning | Generative AI / LLM        | LoRA, PEFT, SFT, TRL, TinyLlama, Dolly-15K                                     |    ✅   |
 
 ---
 
@@ -64,8 +64,7 @@ AI-ML-Projects/
 │
 ├── Domain_Specific_RAG/
 │   ├── README.md
-│   ├── Notebook
-│   └── (Work in Progress)
+│   └── Domain_Specific_RAG_Pipeline.ipynb
 │
 ├── MCP-SQL-Agent/
 │   ├── README.md
@@ -91,43 +90,47 @@ AI-ML-Projects/
 
 ---
 
-## Core AI/ML Skills Covered
+# Core AI/ML Skills Covered
 
-**Machine Learning:** Regression • Classification • Clustering • Recommendation Systems
+**Machine Learning:** Regression • Classification • Clustering • Recommendation Systems • Feature Engineering
 
-**Deep Learning:** Autoencoders • Neural Networks
+**Deep Learning:** Autoencoders • Neural Networks • PyTorch • TensorFlow
 
-**NLP & Generative AI:** Retrieval-Augmented Generation (RAG) • Vector Databases • Embeddings • Text-to-SQL • Large Language Models • Instruction Tuning • Supervised Fine-Tuning (SFT)
+**NLP & Generative AI:** Retrieval-Augmented Generation (RAG) • Dense Embeddings • Semantic Search • Vector Databases • Text-to-SQL • Large Language Models • Instruction Tuning • Supervised Fine-Tuning (SFT)
 
-**LLM Fine-Tuning:** LoRA • Parameter-Efficient Fine-Tuning (PEFT) • Attention Projection Targeting • Gradient Checkpointing • Gradient Accumulation • Mixed-Precision Training • Adapter-Based Fine-Tuning
+**RAG & Information Retrieval:** Document Ingestion • Text Chunking • Chunk Overlap • BGE Embeddings • Normalized Embeddings • Vector Similarity Search • Top-K Retrieval • Context Construction • Prompt Engineering • Grounded Generation
+
+**LLM Fine-Tuning:** LoRA • Parameter-Efficient Fine-Tuning (PEFT) • TRL • Supervised Fine-Tuning (SFT) • Attention Projection Targeting • Gradient Checkpointing • Gradient Accumulation • Mixed-Precision Training • Adapter-Based Fine-Tuning
 
 **Agentic AI:** Model Context Protocol (MCP) • ReAct Agents • Tool Calling • MCP Client/Server Architecture • MCP Tools • MCP Resources • MCP Prompts • LLM-Driven Database Interaction
 
-**Data Science:** EDA • Feature Engineering • Statistical Analysis • Business Analytics
+**Data Science:** EDA • Statistical Analysis • Business Analytics • Data Preprocessing • Data Visualization
 
-**MLOps & Tools:** Scikit-learn • TensorFlow • PyTorch • Hugging Face Transformers • PEFT • TRL • Datasets • LangChain • Milvus • Groq • FastMCP • Pandas • NumPy • uv
+**MLOps & AI Tools:** Scikit-learn • TensorFlow • PyTorch • Hugging Face Transformers • Sentence Transformers • PEFT • TRL • Datasets • Milvus • FastMCP • Groq • LangChain • Pandas • NumPy • uv
 
 ---
 
 # Tech Stack
 
-| Category | Technologies |
-|----------|--------------|
-| Programming | Python |
-| Data Analysis | Pandas, NumPy |
-| Machine Learning | Scikit-Learn |
-| Deep Learning | PyTorch, TensorFlow, Keras |
-| NLP / LLM | Hugging Face Transformers, Sentence Transformers, LangChain, TinyLlama, GPT-OSS |
-| LLM Fine-Tuning | LoRA, PEFT, TRL, Supervised Fine-Tuning (SFT) |
-| Agentic AI | Model Context Protocol (MCP), FastMCP, ReAct, LLM Tool Calling |
-| LLM Inference | Groq |
-| Vector Database | Milvus |
-| Relational Database | SQLite |
-| Visualization | Matplotlib, Seaborn |
-| GPU / Acceleration | CUDA, Mixed Precision (FP16/BF16) |
-| Development | Jupyter Notebook, Google Colab, VS Code, Git, GitHub, uv |
+| Category            | Technologies                                                                                          |
+| ------------------- | ----------------------------------------------------------------------------------------------------- |
+| Programming         | Python                                                                                                |
+| Data Analysis       | Pandas, NumPy                                                                                         |
+| Machine Learning    | Scikit-Learn                                                                                          |
+| Deep Learning       | PyTorch, TensorFlow, Keras                                                                            |
+| NLP / LLM           | Hugging Face Transformers, Sentence Transformers, LangChain, TinyLlama, Microsoft Phi-3 Mini, GPT-OSS |
+| Embedding Models    | BAAI/bge-small-en-v1.5                                                                                |
+| RAG                 | Retrieval-Augmented Generation, Document Chunking, Semantic Retrieval, Context-Aware Prompting        |
+| Vector Database     | Milvus                                                                                                |
+| Vector Search       | Dense Embeddings, Vector Similarity Search, Top-K Retrieval, Normalized Embeddings                    |
+| LLM Fine-Tuning     | LoRA, PEFT, TRL, Supervised Fine-Tuning (SFT)                                                         |
+| Agentic AI          | Model Context Protocol (MCP), FastMCP, ReAct, LLM Tool Calling                                        |
+| LLM Inference       | Hugging Face Transformers, Groq                                                                       |
+| Relational Database | SQLite                                                                                                |
+| Visualization       | Matplotlib, Seaborn                                                                                   |
+| GPU / Acceleration  | CUDA, PyTorch, Hugging Face Accelerate, Mixed Precision (FP16/BF16)                                   |
+| Development         | Jupyter Notebook, Google Colab, VS Code, Git, GitHub, uv                                              |
 
----
 
 # Project Workflow
 
