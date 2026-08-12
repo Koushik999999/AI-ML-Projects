@@ -13,7 +13,7 @@ venv/
 *.png
 *.gif
 *.svg
-
+*.txt
 # Milvus / RAG database
 huggingface_rag.db/
 *.arrow
