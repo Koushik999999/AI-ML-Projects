@@ -8,6 +8,11 @@ venv/
 .toml
 .python-version
 .html
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
 
 # Milvus / RAG database
 huggingface_rag.db/
