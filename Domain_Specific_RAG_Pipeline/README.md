@@ -39,6 +39,27 @@ The project demonstrates how unstructured domain-specific documents can be trans
 
 ---
 
+## 📂 Project Structure
+
+```text
+domain-specific-rag-engine/
+├── config/
+│   └── settings.py          # Centralized configuration and environment mappings
+├── src/
+│   ├── __init__.py
+│   ├── ingestion.py         # Dataset extraction and document chunking
+│   ├── embeddings.py        # SentenceTransformer embedding service
+│   ├── vector_store.py      # Milvus collection management & retrieval logic
+│   ├── generator.py         # LLM pipeline and structured prompt templates
+│   └── pipeline.py          # End-to-end RAG query orchestrator
+├── scripts/
+│   └── index_docs.py        # Standalone indexing script for dataset ingestion
+├── .env.example             # Template for API keys and database paths
+├── requirements.txt         # Project dependencies
+└── main.py                  # CLI entrypoint for running test queries
+
+--- 
+
 # 🔄 RAG Pipeline
 
 The complete pipeline consists of two major stages:
