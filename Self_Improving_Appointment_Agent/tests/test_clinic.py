@@ -17,9 +17,9 @@ def test_fixed_appointments_present():
 
 def test_same_name_patients_distinguished_by_dob():
     c = Clinic()
-    assert c.find_patient("john smith", "1970-07-04")["id"] == "P002"
-    assert c.find_patient("John  Smith", "1992-11-20")["id"] == "P003"
-    assert c.find_patient("John Smith", "1980-01-01") is None
+    assert c.find_patient("Ravi Teja", "1970-07-04")["id"] == "P002"
+    assert c.find_patient("Ravi  Teja", "1992-11-20")["id"] == "P003"
+    assert c.find_patient("Ravi Teja", "1980-01-01") is None
 
 
 def test_double_booking_rejected_by_database():

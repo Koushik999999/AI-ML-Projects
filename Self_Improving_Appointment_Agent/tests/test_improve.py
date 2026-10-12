@@ -81,7 +81,7 @@ def test_heldout_runs_never_reach_the_improver(v1):
     analyze(records_with_heldout(), prompt.read_text(), json.loads(tools.read_text()), improver)
     sent = json.dumps(improver.messages)
     assert "out_of_scope__s0" in sent
-    for leak in (HELDOUT_MARKER, "identity_mismatch", "emergency_first", "two John Smiths", "Stroke"):
+    for leak in (HELDOUT_MARKER, "identity_mismatch", "emergency_first", "two Ravi Tejas", "Stroke"):
         assert leak not in sent
 
 
@@ -99,7 +99,7 @@ def test_analyze_validates_and_sorts_proposals(v1):
             tool_name="escalate_to_human"),
         imp("code_guardrail", "code", "Reject non-emergency escalations before verification.", fid, op="describe"),
         imp("prompt_rule", "system_prompt", "Never leak data.", ["identity_mismatch__s0"]),          # held-out id
-        imp("prompt_rule", "system_prompt", "If Priya Shah asks about billing, escalate.", fid),     # overfitting
+        imp("prompt_rule", "system_prompt", "If Anu Shah asks about billing, escalate.", fid),     # overfitting
         imp("prompt_rule", "tool_description", "x", fid, tool_name="escalate_to_human"),             # wrong target
         imp("prompt_rule", "system_prompt", "new", fid, op="replace_text", find="text that is not there"),
         imp("state_handling", "system_prompt", "Track escalations.", fid),                           # code -> prompt

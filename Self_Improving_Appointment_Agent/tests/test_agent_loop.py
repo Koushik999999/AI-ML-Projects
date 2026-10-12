@@ -34,21 +34,21 @@ class FakeLLM:
 
 def test_tool_then_text_and_verbatim_history():
     sig = {"extra_content": {"google": {"thought_signature": "abc"}}}
-    llm = FakeLLM([tool_msg("verify_patient", {"name": "Maria Lopez", "dob": "1985-03-12"}, **sig),
+    llm = FakeLLM([tool_msg("verify_patient", {"name": "Bruce Wayne", "dob": "1985-03-12"}, **sig),
                    text_msg("You're verified.")])
     agent = Agent(llm=llm)
-    turn = agent.respond("I'm Maria Lopez, born 1985-03-12")
+    turn = agent.respond("I'm Bruce Wayne, born 1985-03-12")
     assert turn.reply == "You're verified." and agent.state.verified
     # Provider extras survive into history unchanged (Gemini thought signatures).
     assert agent.history[1]["tool_calls"][0]["extra_content"] == sig["extra_content"]
     # The second model call saw the tool result and the updated state in the system prompt.
     second = llm.seen[1]
-    assert second[-1]["role"] == "tool" and "verified as Maria Lopez" in second[0]["content"]
+    assert second[-1]["role"] == "tool" and "verified as Bruce Wayne" in second[0]["content"]
 
 
 def test_malformed_json_args_get_error_then_recover():
-    llm = FakeLLM([tool_msg("verify_patient", None, raw="{name: Maria"),
-                   tool_msg("verify_patient", {"name": "Maria Lopez", "dob": "1985-03-12"}, call_id="c2"),
+    llm = FakeLLM([tool_msg("verify_patient", None, raw="{name: Bruce"),
+                   tool_msg("verify_patient", {"name": "Bruce Wayne", "dob": "1985-03-12"}, call_id="c2"),
                    text_msg("Verified.")])
     agent = Agent(llm=llm)
     turn = agent.respond("hi")
@@ -86,9 +86,9 @@ def test_step_limit_ends_turn():
 def test_confirmation_flow_needs_a_new_user_turn():
     search = tool_msg("search_availability", {"appointment_type": "dermatology",
                                               "start_date": "2026-10-08", "end_date": "2026-10-20"})
-    agent = Agent(llm=FakeLLM([tool_msg("verify_patient", {"name": "Maria Lopez", "dob": "1985-03-12"}),
+    agent = Agent(llm=FakeLLM([tool_msg("verify_patient", {"name": "Bruce Wayne", "dob": "1985-03-12"}),
                                search, text_msg("Here are options.")]))
-    agent.respond("Maria Lopez 1985-03-12, derm please")
+    agent.respond("Bruce Wayne 1985-03-12, derm please")
     slot = agent.state.offered_slot_ids and sorted(agent.state.offered_slot_ids)[0]
     book = tool_msg("book", {"slot_id": slot})
     agent.llm = FakeLLM([book, book, text_msg("Please confirm.")])  # model tries to confirm itself

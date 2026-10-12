@@ -12,7 +12,7 @@ def make(faults=None, patches=None):
     return ToolExecutor(clinic, ConversationState(), faults=FaultInjector(faults)), clinic
 
 
-def verify(ex, name="Maria Lopez", dob="1985-03-12"):
+def verify(ex, name="Bruce Wayne", dob="1985-03-12"):
     return ex.call("verify_patient", {"name": name, "dob": dob})
 
 
@@ -53,7 +53,7 @@ def test_verification_lockout_and_generic_errors():
     for _ in range(3):
         res = verify(ex, dob="1985-03-13")
         assert res["error_code"] == "VERIFICATION_FAILED"
-        assert "Lopez" not in res["message"]
+        assert "Wayne" not in res["message"]
     assert verify(ex)["error_code"] == "VERIFICATION_LOCKED"  # even the right DOB is now refused
     assert not ex.state.verified
 
@@ -67,7 +67,7 @@ def test_bad_dob_format_does_not_count_as_attempt():
 def test_cannot_switch_identity_mid_conversation():
     ex, _ = make()
     assert verify(ex)["ok"]
-    assert verify(ex, "John Smith", "1970-07-04")["error_code"] == "ALREADY_VERIFIED"
+    assert verify(ex, "Ravi Teja", "1970-07-04")["error_code"] == "ALREADY_VERIFIED"
     assert ex.state.verified_patient_id == "P001"
 
 
@@ -76,7 +76,7 @@ def test_other_patients_appointments_are_invisible():
     verify(ex)
     listed = ex.call("list_my_appointments", {})["appointments"]
     assert all(a["appointment_id"] != "A0001" for a in listed)
-    other = ex.call("cancel", {"appointment_id": "A0001"})  # John Smith's
+    other = ex.call("cancel", {"appointment_id": "A0001"})  # Ravi Teja's
     missing = ex.call("cancel", {"appointment_id": "A9999"})
     assert other["error_code"] == missing["error_code"] == "NOT_FOUND"
     assert other["message"] == missing["message"]
@@ -94,7 +94,7 @@ def test_book_needs_patient_reply_between_summary_and_write():
     verify(ex)
     sid = first_derm_slot(ex)
     first = ex.call("book", {"slot_id": sid})
-    assert first["error_code"] == "CONFIRMATION_REQUIRED" and "Maria Lopez" in first["summary"]
+    assert first["error_code"] == "CONFIRMATION_REQUIRED" and "Bruce Wayne" in first["summary"]
     # Same turn: calling again must not execute.
     assert ex.call("book", {"slot_id": sid})["error_code"] == "CONFIRMATION_REQUIRED"
     ex.state.user_turn += 1
@@ -137,7 +137,7 @@ def test_timeout_then_retry_without_reconfirming():
 
 def test_reschedule_moves_appointment():
     ex, clinic = make()
-    verify(ex, "Priya Shah", "1990-01-15")
+    verify(ex, "Anu Shah", "1990-01-15")
     res = ex.call("search_availability", {"provider_name": "Dr. Rao", "start_date": "2026-10-12",
                                           "end_date": "2026-10-16", "time_of_day": "afternoon"})
     new_slot = res["slots"][0]["slot_id"]
@@ -149,13 +149,13 @@ def test_reschedule_moves_appointment():
 
 def test_cancel_own_appointment():
     ex, clinic = make()
-    verify(ex, "David Chen", "1978-09-30")
+    verify(ex, "Vijay Devarakonda", "1978-09-30")
     assert confirmed_call(ex, "cancel", {"appointment_id": "A0003"})["ok"]
     assert clinic.get_appointment("A0003")["status"] == "cancelled"
 
 
 @pytest.mark.parametrize("args,code", [
-    ({"name": "Maria Lopez"}, "MALFORMED_TOOL_CALL"),
+    ({"name": "Bruce Wayne"}, "MALFORMED_TOOL_CALL"),
     ("not a dict", "MALFORMED_TOOL_CALL"),
     ({"name": 5, "dob": "1985-03-12"}, "MALFORMED_TOOL_CALL"),
 ])

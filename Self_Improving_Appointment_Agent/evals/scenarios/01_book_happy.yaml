@@ -1,10 +1,10 @@
 id: book_happy
 title: Book a dermatology visit (happy path)
-persona: "Maria Lopez, date of birth March 12, 1985. Wants a dermatology visit for a mole check, on a morning next week (Oct 12-16)."
+persona: "Bruce Wayne, date of birth March 12, 1985. Wants a dermatology visit for a mole check, on a morning next week (Oct 12-16)."
 goal: "Book one dermatology appointment on a morning next week."
 script:
   - "Hi, I'd like to book a dermatology appointment next week, mornings if possible."
-  - "Maria Lopez, born March 12, 1985."
+  - "Bruce Wayne, born March 12, 1985."
   - "The earliest morning one works for me."
 then: llm
 max_turns: 7

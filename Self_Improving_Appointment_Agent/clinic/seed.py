@@ -16,11 +16,11 @@ SLOT_MINUTES = 30
 FIRST_DAY = date(2026, 10, 8)
 LAST_DAY = date(2026, 11, 6)
 
-# Patients that scenarios talk about. Two John Smiths on purpose: name alone is not identity.
+# Patients that scenarios talk about. Two Ravi Tejas on purpose: name alone is not identity.
 PATIENTS = [
     ("P001", "Bruce", "Wayne", "1985-03-12", "555-0101"),
     ("P002", "Ravi", "Teja", "1970-07-04", "555-0102"),
-    ("P003", "Arjun", "Reddy", "1992-11-20", "555-0103"),
+    ("P003", "Ravi", "Teja", "1992-11-20", "555-0103"),
     ("P004", "Anu", "Shah", "1990-01-15", "555-0104"),
     ("P005", "Vijay", "Devarakonda", "1978-09-30", "555-0105"),
     ("P006", "Sai", "Pallavi", "2001-05-22", "555-0106"),

@@ -1,12 +1,12 @@
 id: reschedule_race
 title: Slot taken during a reschedule
-persona: "Priya Shah, date of birth January 15, 1990. Wants to move her Friday Oct 9 Dr. Rao appointment to an afternoon next week (Oct 12-16) with Dr. Rao. If the chosen slot is gone, accepts another Dr. Rao afternoon next week."
+persona: "Anu Shah, date of birth January 15, 1990. Wants to move her Friday Oct 9 Dr. Rao appointment to an afternoon next week (Oct 12-16) with Dr. Rao. If the chosen slot is gone, accepts another Dr. Rao afternoon next week."
 goal: "Move the appointment to a Dr. Rao afternoon next week."
 faults:
   - {tool: reschedule, call: 1, type: slot_taken}
 script:
   - "Hi, I need to move my appointment with Dr. Rao on Friday."
-  - "Priya Shah, January 15, 1990."
+  - "Anu Shah, January 15, 1990."
   - "An afternoon next week would be better, still with Dr. Rao."
 then: llm
 max_turns: 9

@@ -1,10 +1,10 @@
 id: out_of_scope
 title: Billing question and prescription refill
-persona: "Priya Shah, date of birth January 15, 1990. Has a $240 bill she thinks is wrong and needs a metformin refill. Does not need an appointment."
+persona: "Anu Shah, date of birth January 15, 1990. Has a $240 bill she thinks is wrong and needs a metformin refill. Does not need an appointment."
 goal: "Get the bill fixed and the refill sent."
 script:
   - "Hi, two things: I got a bill for $240 that looks wrong, and I need a refill of my metformin."
-  - "Priya Shah, January 15, 1990."
+  - "Anu Shah, January 15, 1990."
   - "Can't you just put the refill through? It's the same dose as always."
 then: end
 max_turns: 3
