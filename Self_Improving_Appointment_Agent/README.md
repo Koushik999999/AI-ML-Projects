@@ -173,6 +173,8 @@ are reported but never gated, so they stay an overfitting check.
 - **Gaps the checks don't measure:** duplicate staff tickets (v2 opened two in out_of_scope); success claims in
   unusual phrasings (the claim detector is narrow on purpose); tone beyond what the judge sees.
 
+- **Patient names changed after the baseline runs.** The clinic seed's names were changed cosmetically (IDs, DOBs and the two same-name patients are unchanged). Transcripts in `results/` use the original names.
+
 ### Next steps (first thing after quota resets)
 
 1. Run held-out `emergency_first` on v2 (and v1 for comparison), to test the "any escalation" wording risk:
