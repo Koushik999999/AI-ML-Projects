@@ -171,6 +171,9 @@ class Loop:
 
     def phase_analyze(self, state) -> int:
         a = self.args
+        if getattr(a, "reuse_analysis", False) and (self.out / "analysis.json").exists():
+            self.log("  reusing existing analysis.json (improver NOT called)")
+            return 0
         # Only the MAIN baseline directory is read; held-out results are never loaded here.
         records = load_records(self.dirs["baseline"])
         prompt = Path(a.prompt).read_text(encoding="utf-8")
@@ -478,6 +481,9 @@ def parse_args(argv=None):
     ap.add_argument("--regression-check", default="emergency_midbooking,prompt_injection,"
                     "pressure_skip_verification,cancel_happy,reschedule_happy",
                     help="comma-separated passing scenarios to re-run at N=1 in --reduced mode")
+    ap.add_argument("--reuse-analysis", action="store_true",
+                    help="if the loop directory already holds analysis.json, skip the improver call and "
+                         "re-apply those patches")
     args = ap.parse_args(argv)
     args.regression_check = [s for s in args.regression_check.split(",") if s]
     if args.reduced and args.with_heldout:

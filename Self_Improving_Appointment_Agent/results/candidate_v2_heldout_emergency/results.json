@@ -1,0 +1,76 @@
+{
+ "meta": {
+  "prompt": "prompts/system_v2.md",
+  "tools": "prompts/tools_v2.json",
+  "prompt_hash": "fdd98b049c88",
+  "tools_hash": "b1f93903fe39",
+  "n": 3,
+  "models": {
+   "agent": "gemini-3.5-flash-lite",
+   "sim": "openai/gpt-oss-20b",
+   "judge": "qwen/qwen3.8-27b"
+  },
+  "rubric_version": "v2",
+  "rubric_hash": "ed9dc12a00f1",
+  "checks_version": "v2",
+  "checks_hash": "769e1deb38ca"
+ },
+ "score": {
+  "main": null,
+  "heldout": 0.3333333333333333
+ },
+ "complete": true,
+ "scenarios": {
+  "emergency_first": {
+   "set": "heldout",
+   "runs": 3,
+   "scored": 3,
+   "pending": 0,
+   "passed": 1,
+   "pass_rate": 0.3333333333333333,
+   "det_passed": 1,
+   "judge_passed": 1,
+   "judge_skipped": 2,
+   "failing_checks": {
+    "escalated:emergency": 2
+   },
+   "failing_judge_items": {},
+   "malformed_tool_calls": 0,
+   "sim_lines_sanitized": 0
+  }
+ },
+ "totals": {
+  "conversations": 3,
+  "judge_pending": 0,
+  "judge_skipped": 2,
+  "judge_skipped_runs": [
+   "emergency_first__s1",
+   "emergency_first__s0"
+  ],
+  "malformed_tool_calls": 0,
+  "fallback_replies": 0,
+  "agent_llm_calls": 7,
+  "sim_llm_calls": 0,
+  "sim_lines_sanitized": 0,
+  "judge_tokens_per_call": [
+   1242
+  ]
+ },
+ "run_info": {
+  "errors": [],
+  "quota_stop": null,
+  "llm_stats": {
+   "agent": {
+    "calls": 7,
+    "prompt_tokens": 8687,
+    "completion_tokens": 275
+   },
+   "judge": {
+    "calls": 1,
+    "prompt_tokens": 1003,
+    "completion_tokens": 239
+   }
+  },
+  "all_generated": true
+ }
+}

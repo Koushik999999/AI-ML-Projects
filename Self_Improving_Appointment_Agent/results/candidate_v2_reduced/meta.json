@@ -1,7 +1,7 @@
 {
   "prompt": "prompts\\system_v2.md",
   "tools": "prompts\\tools_v2.json",
-  "prompt_hash": "23332a99c963",
+  "prompt_hash": "fdd98b049c88",
   "tools_hash": "b1f93903fe39",
   "n": 3,
   "models": {

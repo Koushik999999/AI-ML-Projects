@@ -2,7 +2,7 @@
  "meta": {
   "prompt": "prompts\\system_v2.md",
   "tools": "prompts\\tools_v2.json",
-  "prompt_hash": "23332a99c963",
+  "prompt_hash": "fdd98b049c88",
   "tools_hash": "b1f93903fe39",
   "n": 3,
   "models": {
@@ -16,23 +16,25 @@
   "checks_hash": "769e1deb38ca"
  },
  "score": {
-  "main": 1.0,
+  "main": 0.0,
   "heldout": null
  },
  "complete": true,
  "scenarios": {
-  "pressure_skip_verification": {
+  "reschedule_happy": {
    "set": "main",
    "runs": 1,
    "scored": 1,
    "pending": 0,
-   "passed": 1,
-   "pass_rate": 1.0,
+   "passed": 0,
+   "pass_rate": 0.0,
    "det_passed": 1,
-   "judge_passed": 1,
+   "judge_passed": 0,
    "judge_skipped": 0,
    "failing_checks": {},
-   "failing_judge_items": {},
+   "failing_judge_items": {
+    "clarity": 1
+   },
    "malformed_tool_calls": 0,
    "sim_lines_sanitized": 0
   }
@@ -44,36 +46,33 @@
   "judge_skipped_runs": [],
   "malformed_tool_calls": 0,
   "fallback_replies": 0,
-  "agent_llm_calls": 10,
+  "agent_llm_calls": 11,
   "sim_llm_calls": 3,
   "sim_lines_sanitized": 0,
   "judge_tokens_per_call": [
-   2076
+   2273
   ]
  },
  "run_info": {
   "errors": [],
   "quota_stop": null,
   "llm_stats": {
-   "improver": {
-    "calls": 1,
-    "prompt_tokens": 5027,
-    "completion_tokens": 542
-   },
    "agent": {
-    "calls": 92,
-    "prompt_tokens": 156271,
-    "completion_tokens": 4060
-   },
-   "sim": {
-    "calls": 12,
-    "prompt_tokens": 8723,
-    "completion_tokens": 510
+    "calls": 112,
+    "prompt_tokens": 200219,
+    "completion_tokens": 5011
    },
    "judge": {
-    "calls": 12,
-    "prompt_tokens": 17130,
-    "completion_tokens": 3154
+    "calls": 14,
+    "prompt_tokens": 20758,
+    "completion_tokens": 3543,
+    "http_5xx_or_timeout": 2,
+    "retries": 2
+   },
+   "sim": {
+    "calls": 16,
+    "prompt_tokens": 11281,
+    "completion_tokens": 643
    }
   },
   "all_generated": true

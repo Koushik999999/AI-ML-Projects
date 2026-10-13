@@ -1,0 +1,329 @@
+﻿### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v1_reschedule_happy
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v1_reschedule_happy (rubric v2, hash ed9dc12a00f1)
+  judged reschedule_happy s1000: PASS
+  judged reschedule_happy s1001: PASS
+  judged reschedule_happy s1002: PASS
+
+# Eval: prompts\system_v1.md + prompts\tools_v1.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## main set: score 1.00 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| reschedule_happy | 3/3 | 3/3 | 3/3 | 0 | 0 | - | - |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 33; simulator LLM calls: 9 (lines cut for speaking as the assistant: 2)
+- judge tokens per call (actual): mean 2323, max 2348
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v2_reschedule_happy
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v2_reschedule_happy (rubric v2, hash ed9dc12a00f1)
+  judged reschedule_happy s1000: FAIL
+  judged reschedule_happy s1001: FAIL
+  judged reschedule_happy s1002: FAIL
+
+# Eval: prompts\system_v2.md + prompts\tools_v2.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## main set: score 0.00 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| reschedule_happy | 0/3 | 3/3 | 0/3 | 0 | 0 | - | clarity x3 |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 33; simulator LLM calls: 9 (lines cut for speaking as the assistant: 0)
+- judge tokens per call (actual): mean 2282, max 2302
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v1_reschedule_race
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v1_reschedule_race (rubric v2, hash ed9dc12a00f1)
+  judged reschedule_race s1000: PASS
+  judged reschedule_race s1001: PASS
+  judged reschedule_race s1002: PASS
+
+# Eval: prompts/system_v1.md + prompts/tools_v1.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## heldout set: score 1.00 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| reschedule_race | 3/3 | 3/3 | 3/3 | 0 | 0 | - | - |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 45; simulator LLM calls: 15 (lines cut for speaking as the assistant: 3)
+- judge tokens per call (actual): mean 2659, max 2686
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v2_reschedule_race
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v2_reschedule_race (rubric v2, hash ed9dc12a00f1)
+  judged reschedule_race s1001: PASS
+  judged reschedule_race s1000: FAIL
+  judged reschedule_race s1002: FAIL
+
+# Eval: prompts/system_v2.md + prompts/tools_v2.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## heldout set: score 0.33 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| reschedule_race | 1/3 | 3/3 | 1/3 | 0 | 0 | - | clarity x2 |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 45; simulator LLM calls: 15 (lines cut for speaking as the assistant: 1)
+- judge tokens per call (actual): mean 2602, max 2650
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v1_book_happy
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v1_book_happy (rubric v2, hash ed9dc12a00f1)
+  judged book_happy s1000: PASS
+  judged book_happy s1001: PASS
+  judged book_happy s1002: PASS
+
+# Eval: prompts\system_v1.md + prompts\tools_v1.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## main set: score 1.00 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| book_happy | 3/3 | 3/3 | 3/3 | 0 | 0 | - | - |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 24; simulator LLM calls: 6 (lines cut for speaking as the assistant: 0)
+- judge tokens per call (actual): mean 1786, max 1792
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v2_book_happy
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep1\v2_book_happy (rubric v2, hash ed9dc12a00f1)
+  judged book_happy s1000: PASS
+  judged book_happy s1001: PASS
+  judged book_happy s1002: FAIL
+
+# Eval: prompts\system_v2.md + prompts\tools_v2.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## main set: score 0.67 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| book_happy | 2/3 | 3/3 | 2/3 | 0 | 0 | - | clarity |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 24; simulator LLM calls: 6 (lines cut for speaking as the assistant: 2)
+- judge tokens per call (actual): mean 1768, max 1777
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v1_reschedule_happy
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v1_reschedule_happy (rubric v2, hash ed9dc12a00f1)
+  judged reschedule_happy s2001: PASS
+  judged reschedule_happy s2000: PASS
+  judged reschedule_happy s2002: PASS
+
+# Eval: prompts\system_v1.md + prompts\tools_v1.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## main set: score 1.00 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| reschedule_happy | 3/3 | 3/3 | 3/3 | 0 | 0 | - | - |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 33; simulator LLM calls: 9 (lines cut for speaking as the assistant: 2)
+- judge tokens per call (actual): mean 2323, max 2348
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v2_reschedule_happy
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v2_reschedule_happy (rubric v2, hash ed9dc12a00f1)
+  judged reschedule_happy s2000: FAIL
+  judged reschedule_happy s2001: FAIL
+  judged reschedule_happy s2002: FAIL
+
+# Eval: prompts\system_v2.md + prompts\tools_v2.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## main set: score 0.00 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| reschedule_happy | 0/3 | 3/3 | 0/3 | 0 | 0 | - | clarity x3 |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 33; simulator LLM calls: 9 (lines cut for speaking as the assistant: 0)
+- judge tokens per call (actual): mean 2282, max 2302
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v1_reschedule_race
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v1_reschedule_race (rubric v2, hash ed9dc12a00f1)
+  judged reschedule_race s2000: PASS
+  judged reschedule_race s2001: PASS
+  judged reschedule_race s2002: PASS
+
+# Eval: prompts/system_v1.md + prompts/tools_v1.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## heldout set: score 1.00 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| reschedule_race | 3/3 | 3/3 | 3/3 | 0 | 0 | - | - |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 45; simulator LLM calls: 15 (lines cut for speaking as the assistant: 3)
+- judge tokens per call (actual): mean 2659, max 2686
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v2_reschedule_race
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v2_reschedule_race (rubric v2, hash ed9dc12a00f1)
+  judged reschedule_race s2000: FAIL
+  judged reschedule_race s2001: PASS
+  judged reschedule_race s2002: FAIL
+
+# Eval: prompts/system_v2.md + prompts/tools_v2.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## heldout set: score 0.33 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| reschedule_race | 1/3 | 3/3 | 1/3 | 0 | 0 | - | clarity x2 |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 45; simulator LLM calls: 15 (lines cut for speaking as the assistant: 1)
+- judge tokens per call (actual): mean 2602, max 2650
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v1_book_happy
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v1_book_happy (rubric v2, hash ed9dc12a00f1)
+  judged book_happy s2001: PASS
+  judged book_happy s2000: PASS
+  judged book_happy s2002: PASS
+
+# Eval: prompts\system_v1.md + prompts\tools_v1.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## main set: score 1.00 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| book_happy | 3/3 | 3/3 | 3/3 | 0 | 0 | - | - |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 24; simulator LLM calls: 6 (lines cut for speaking as the assistant: 0)
+- judge tokens per call (actual): mean 1786, max 1792
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v2_book_happy
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep2\v2_book_happy (rubric v2, hash ed9dc12a00f1)
+  judged book_happy s2001: PASS
+  judged book_happy s2000: PASS
+  judged book_happy s2002: FAIL
+
+# Eval: prompts\system_v2.md + prompts\tools_v2.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+## main set: score 0.67 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| book_happy | 2/3 | 3/3 | 2/3 | 0 | 0 | - | clarity |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 0
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 24; simulator LLM calls: 6 (lines cut for speaking as the assistant: 2)
+- judge tokens per call (actual): mean 1768, max 1777
+
+### C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep3\v1_reschedule_happy
+3 run(s) pending judgment in C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep3\v1_reschedule_happy (rubric v2, hash ed9dc12a00f1)
+  judged reschedule_happy s3000: PASS
+  judged reschedule_happy s3001: PASS
+
+# Eval: prompts\system_v1.md + prompts\tools_v1.json
+
+Rubric v2 (hash ed9dc12a00f1), deterministic checks v2.
+
+Models: agent `gemini-3.5-flash-lite`, sim `openai/gpt-oss-20b`, judge `qwen/qwen3.8-27b`. N=3 per scenario.
+
+**INCOMPLETE: 1 run(s) await judging (`--judge-only`). Scores below cover scored runs only.**
+
+## main set: score 1.00 (mean pass rate over 1 scenarios)
+
+| scenario | pass | deterministic | judge | judge skipped | judge pending | failing checks | failing judge items |
+|---|---|---|---|---|---|---|---|
+| reschedule_happy | 2/2 | 3/3 | 2/2 | 0 | 1 | - | - |
+
+## Totals
+
+- conversations: 3; judge skipped (deterministic already failed): 0; judge pending: 1
+- malformed tool calls: 0; fallback replies: 0
+- agent LLM calls: 33; simulator LLM calls: 9 (lines cut for speaking as the assistant: 2)
+- judge tokens per call (actual): mean 2313, max 2348
+
+STOPPED: judge: daily token budget reached (187411/190000) for qwen/qwen3.8-27b
+Judged runs are saved; re-run --judge-only to continue.
+QUOTA STOP at C:\Users\VenkataKoushik\Desktop\Scaler\AI-ML-Projects\Self_Improving_Appointment_Agent\results\judge_variance\rep3\v1_reschedule_happy

@@ -1,0 +1,12 @@
+{
+  "accepted": false,
+  "baseline_score": 0.7857142857142857,
+  "candidate_score": 0.8333333333333331,
+  "reasons": [
+    "regressions: reschedule_happy: 1.00 -> 0.00 (drop of 3 run(s), tolerance 1)"
+  ],
+  "regressions": [
+    "reschedule_happy: 1.00 -> 0.00 (drop of 3 run(s), tolerance 1)"
+  ],
+  "needs_confirmation": []
+}

@@ -1,8 +1,8 @@
 {
   "config": {
-    "baseline": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\self-improving-appointment-agent\\results\\baseline_v1",
-    "prompt": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\self-improving-appointment-agent\\prompts\\system_v1.md",
-    "tools": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\self-improving-appointment-agent\\prompts\\tools_v1.json",
+    "baseline": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\AI-ML-Projects\\Self_Improving_Appointment_Agent\\results\\baseline_v1",
+    "prompt": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\AI-ML-Projects\\Self_Improving_Appointment_Agent\\prompts\\system_v1.md",
+    "tools": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\AI-ML-Projects\\Self_Improving_Appointment_Agent\\prompts\\tools_v1.json",
     "n": 3,
     "version": "v2",
     "with_heldout": false,
@@ -18,12 +18,16 @@
   "done": [
     "baseline",
     "analyze",
-    "apply"
+    "apply",
+    "candidate_eval",
+    "confirm",
+    "gate",
+    "report"
   ],
   "candidate": {
-    "prompt": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\self-improving-appointment-agent\\prompts\\system_v2.md",
-    "tools": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\self-improving-appointment-agent\\prompts\\tools_v2.json",
-    "diff": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\self-improving-appointment-agent\\results\\loop_system_v1_to_v2_reduced\\diff_system_v1_to_v2.patch",
+    "prompt": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\AI-ML-Projects\\Self_Improving_Appointment_Agent\\prompts\\system_v2.md",
+    "tools": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\AI-ML-Projects\\Self_Improving_Appointment_Agent\\prompts\\tools_v2.json",
+    "diff": "C:\\Users\\VenkataKoushik\\Desktop\\Scaler\\AI-ML-Projects\\Self_Improving_Appointment_Agent\\results\\loop_system_v1_to_v2_reduced\\diff_system_v1_to_v2.patch",
     "log": [
       {
         "category": "prompt_rule",
@@ -69,19 +73,19 @@
       "reschedule_happy"
     ]
   },
+  "confirm_scenarios": [
+    "reschedule_happy"
+  ],
   "gate": {
     "accepted": false,
     "baseline_score": 0.0,
-    "candidate_score": 1.0,
+    "candidate_score": 0.8888888888888888,
     "reasons": [
-      "INCOMPLETE: stopped in phase 'candidate_eval' (daily quota reached); no gate decision. Not run: cancel_happy, reschedule_happy"
+      "regressions: reschedule_happy: failed its regression run and the confirming rerun"
     ],
-    "regressions": [],
-    "needs_confirmation": [],
-    "incomplete": true
-  },
-  "incomplete_missing": [
-    "cancel_happy",
-    "reschedule_happy"
-  ]
+    "regressions": [
+      "reschedule_happy: failed its regression run and the confirming rerun"
+    ],
+    "needs_confirmation": []
+  }
 }

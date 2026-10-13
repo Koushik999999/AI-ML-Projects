@@ -261,6 +261,17 @@ def test_loop_resumes_after_quota_stop_without_redoing_phases(tmp_path, v1):
     assert len(improver.messages) == 1                   # improver not called again on resume
 
 
+def test_reuse_analysis_skips_the_improver(tmp_path, v1):
+    loop, fake_eval, improver = make_loop(tmp_path, v1, baseline_fails_out_of_scope, stop_at="candidate_v2")
+    assert loop.run() == 3 and len(improver.messages) == 1
+    (tmp_path / "results" / "loop" / "state.json").unlink()   # simulate a lost/incompatible phase state
+    loop.args.reuse_analysis = True
+    loop2 = Loop(loop.args, run_eval_fn=FakeEval(baseline_fails_out_of_scope), judge_pending_fn=lambda d: 0,
+                 improver_llm=improver, log=lambda m: None)
+    assert loop2.run() == 0
+    assert len(improver.messages) == 1                   # improver NOT called again
+
+
 def test_n2_drop_needs_confirming_rerun_with_new_samples(tmp_path, v1):
     def outcome(d, sid, sample):
         if d.startswith("baseline"):
