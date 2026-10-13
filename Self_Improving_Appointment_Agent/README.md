@@ -12,7 +12,7 @@ that learns from the agent's own failures:
   three failing scenarios fully and one partly (medical_advice 0/3 -> 3/3, out_of_scope 0/3 -> 3/3,
   verification_failure 0/3 -> 2/3; mean 0 -> 0.889), but **reschedule_happy regressed 3/3 -> 0/1, and 0/1 again on the
   confirming rerun**, both on the judge's `clarity` item.
-- **Full gate: REJECTED** (`results/comparison.md`, identical to `results/loop_system_v1_to_v2/comparison.md`). Main
+- **Full gate: REJECTED** (`results/loop_system_v1_to_v2/comparison.md`; `results/comparison.md` is now an identical copy). Main
   score 0.786 -> 0.833 (N=3, all 14 scenarios), blocked by **reschedule_happy 3/3 -> 0/3** (drop of 3 runs, tolerance 1).
   Other changes: medical_advice 0/3 -> 3/3, out_of_scope 0/3 -> 3/3, verification_failure 0/3 -> 2/3; book_happy,
   change_mind and slot_taken_race each dropped 1 run (tolerated).
@@ -200,7 +200,7 @@ whether the `clarity` failures behind the v2 regressions are judge noise or some
   away; the question is whether they are *right*, which only human labels can answer.
 - **T2/T3 misread (flagged).** Every `clarity` reason on reschedule_happy and reschedule_race cites **T2** and says the
   agent listed Friday/same-day slots "despite the patient asking for (an afternoon) next week". The patient first says
-  "afternoon" and "next week" at **T3** (checked in each transcript's turns; 39 flagged rows in `report.md`). At T2 the
+  "afternoon" and "next week" at **T3** (checked in each transcript's turns; see the flags in `report.md`). All 3 v2 reschedule_happy transcripts failed `clarity` citing T2 for a preference first stated at T3, in every judgment (12 of 12). At T2 the
   patient had only said they wanted to move a Friday appointment. This affects the original verdicts as well as the
   re-judgments, in both v1 and v2.
 - **Same reason, different verdict.** The judge writes nearly the same reason for passing and failing runs.
