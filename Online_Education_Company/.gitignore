@@ -1,0 +1,38 @@
+# --- CONFIDENTIAL: recordings show children. Never commit. ---
+data/
+cache/
+outputs/
+tmp/
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.avi
+*.m4a
+*.mp3
+*.wav
+*.flac
+*.ogg
+*.vtt
+*.srt
+
+# --- secrets ---
+.env
+.env.*
+!.env.example
+
+# --- python / tooling ---
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.streamlit/secrets.toml
+
+# The parent repo ignores *.txt, *.toml, *.png etc. Re-include what deployment needs.
+!requirements.txt
+!packages.txt
+!.streamlit/
+!.streamlit/config.toml
+!docs/*.png
+*.pdf

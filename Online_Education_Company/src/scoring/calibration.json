@@ -1,0 +1,4 @@
+{
+  "cuts": [42, 56, 72],
+  "provenance": "Round-number cut-offs set by eye from the 8 labelled scores (Poor 33/71, Average 50/48, Good 49/66, Excellent 82/86). In-sample only. The honest out-of-sample estimate is the leave-one-out run in scripts/analyze.py, which refits cut-offs on 7 recordings each time."
+}
