@@ -22,12 +22,18 @@ def load_cuts() -> tuple[float, float, float]:
 
 def assess(features: dict) -> dict:
     tech = technical_report(features)
-    s = score(features, load_cuts(), exclude={"Presentation"} if tech["exclude_presentation"] else None)
     t = features.get("transcript") or {}
+    reliability = 1.0
+    if t.get("source") == "whisper":
+        reliability *= 0.85   # machine transcript made locally, no speaker labels
+    if t.get("ok") and not t.get("lexicon_reliable", True):
+        reliability *= 0.85   # garbled / non-English transcript
+    s = score(features, load_cuts(), exclude={"Presentation"} if tech["exclude_presentation"] else None, reliability=reliability)
     teacher = t.get("_teacher_label")
     names = [n for n in (t.get("_student_turn_counts") or {})] + ([teacher] if teacher else [])
     obs: list[Observation] = pick(observations(features, names, teacher))
     notes: list[str] = list(features.get("warnings", []))
+    unavailable = list(features.get("unavailable", []))
     if tech["exclude_presentation"]:
         notes.append("Heavy platform faults were detected, so the 'Presentation' dimension was excluded from the score (the teacher is not penalised for them).")
     if t.get("ok") and not t.get("lexicon_reliable", True):
@@ -41,6 +47,8 @@ def assess(features: dict) -> dict:
         "observations": [asdict(o) for o in obs],
         "technical": tech,
         "notes": notes,
+        "unavailable": unavailable,
+        "speakers_approximate": bool(t.get("speakers_approximate")),
         "features": features,
         "names": names,
         "teacher": teacher,

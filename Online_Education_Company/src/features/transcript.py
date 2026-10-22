@@ -80,7 +80,9 @@ def _is_question(t: str) -> bool:
     return "?" in t or bool(QSTART.match(t.strip()))
 
 
-def transcript_features(cues: list[Cue], media_duration: float | None = None) -> dict:
+def transcript_features(cues: list[Cue], media_duration: float | None = None, *, approximate_speakers: bool = False) -> dict:
+    """`approximate_speakers`: roles were inferred from voice (no VTT labels). Wording cues are then computed over ALL cues,
+    because a misassigned role must not hide or invent a 'teacher said X' cue; role-dependent numbers are flagged unusable."""
     cues = [c for c in cues if c.text.strip()]
     if not cues:
         return {"ok": False, "reason": "empty transcript"}
@@ -91,6 +93,7 @@ def transcript_features(cues: list[Cue], media_duration: float | None = None) ->
     span = max(last - first, 1.0)
     is_t = lambda c: (c.speaker == teacher) if teacher else True  # noqa: E731
     t_cues = [c for c in cues if is_t(c)]
+    lex = cues if approximate_speakers else t_cues  # who counts as the speaker of wording cues
     s_cues = [c for c in cues if teacher and not is_t(c)]
     t_time = sum(min(c.end - c.start, 15) for c in t_cues)
     s_time = sum(min(c.end - c.start, 15) for c in s_cues)
@@ -157,18 +160,18 @@ def transcript_features(cues: list[Cue], media_duration: float | None = None) ->
 
     early = lambda c: c.start - first < 0.12 * span  # noqa: E731
     late = lambda c: c.start - first > 0.85 * span  # noqa: E731
-    praise = [(c.start, c.text[:120]) for c in t_cues if PRAISE.search(SELF_GOOD.sub("", c.text))]
-    check = hits(CHECK, t_cues)
+    praise = [(c.start, c.text[:120]) for c in lex if PRAISE.search(SELF_GOOD.sub("", c.text))]
+    check = hits(CHECK, lex)
     check.sort(key=lambda h: bool(BARE_TAG.search(h[1].lower())))  # real checks ('understood?', 'any doubt?') before a bare "okay?"
-    greet = hits(GREET, t_cues, early)
-    rapport = hits(RAPPORT, t_cues, early)
+    greet = hits(GREET, lex, early)
+    rapport = hits(RAPPORT, lex, early)
     intro = hits(INTRO, cues, lambda c: c.start - first < 0.4 * span)
-    hw = hits(HOMEWORK, t_cues)
-    recap = hits(RECAP, t_cues, lambda c: c.start - first > 0.6 * span)
-    closing = hits(CLOSING, t_cues, late)
-    prev = hits(PREV, t_cues, lambda c: c.start - first < 0.3 * span)
+    hw = hits(HOMEWORK, lex)
+    recap = hits(RECAP, lex, lambda c: c.start - first > 0.6 * span)
+    closing = hits(CLOSING, lex, late)
+    prev = hits(PREV, lex, lambda c: c.start - first < 0.3 * span)
     tech = hits(TECH, cues)
-    energy = sum(len(ENERGY.findall(c.text)) for c in t_cues)
+    energy = sum(len(ENERGY.findall(c.text)) for c in lex)
 
     # children individually engaged = answered within 10 s of a teacher turn ending in a question
     engaged: Counter[str] = Counter()
@@ -178,6 +181,40 @@ def transcript_features(cues: list[Cue], media_duration: float | None = None) ->
                 if u.speaker != teacher and u.start - t.end < 10:
                     engaged[u.speaker] += 1
                     break
+
+    # ---- general interaction features (definitions fixed before looking at any results) ----
+    # student-initiated: a child turn of >=3 words that does NOT directly follow a teacher question (within 10 s)
+    initiated = 0
+    for i, u in enumerate(turns):
+        if teacher and u.speaker != teacher and len(u.text.split()) >= 3:
+            prev_t = turns[i - 1] if i else None
+            answering = prev_t is not None and prev_t.speaker == teacher and _is_question(prev_t.text.split(".")[-1]) and u.start - prev_t.end < 10
+            initiated += not answering
+    # distribution of teacher turn length (words)
+    tl = sorted(len(t.text.split()) for t in t_turns)
+    p90_words = tl[int(0.9 * (len(tl) - 1))] if tl else 0
+    # wait time: silence the teacher leaves after a question before ANYONE speaks again
+    waits = []
+    for i, t in enumerate(turns[:-1]):
+        if t.speaker == teacher and _is_question(re.split(r"(?<=[?.!])\s+", t.text)[-1]):
+            gap = turns[i + 1].start - t.end
+            if 0 <= gap < 20:
+                waits.append(gap)
+    n_asked = len(latencies) + len(unanswered)
+    # repetition: teacher sentences (>=4 words) that near-duplicate (token Jaccard >= 0.8) one said in the previous 120 s
+    seen: list[tuple[float, frozenset[str], str]] = []
+    reps: list[tuple[float, str]] = []
+    n_sent = 0
+    for t in t_turns:
+        for sent in re.split(r"(?<=[?.!])\s+", t.text):
+            toks = frozenset(re.findall(r"[a-z']+", sent.lower()))
+            if len(sent.split()) < 4 or len(toks) < 3:
+                continue
+            n_sent += 1
+            if any(t.start - st <= 120 and len(toks & tk) / len(toks | tk) >= 0.8 for st, tk, _ in seen):
+                reps.append((t.start, sent[:100]))
+            seen.append((t.start, toks, sent))
+    repetition_rate = len(reps) / n_sent if n_sent else 0.0
 
     nb = int(dur // 60) + 1
     tb, sb = [0.0] * nb, [0.0] * nb
@@ -191,6 +228,12 @@ def transcript_features(cues: list[Cue], media_duration: float | None = None) ->
     return {
         "ok": True, "has_speakers": has_speakers, "n_cues": len(cues),
         # English classes score 0.45-0.57 on this; the Malayalam demo (garbled phonetic ASR) scores 0.32.
+        "speakers_approximate": approximate_speakers,
+        "student_initiated_per_min": per_min(initiated),
+        "teacher_turn_p90_words": p90_words,
+        "median_wait_after_question_s": sorted(waits)[len(waits) // 2] if waits else None,
+        "answered_share": len(latencies) / n_asked if n_asked >= 5 else None,
+        "repetition_rate": repetition_rate,
         "english_rate": english_rate, "lexicon_reliable": english_rate >= 0.40,
         "session_start_s": first, "session_end_s": last, "media_duration_s": dur,
         "tail_after_last_cue_s": max(0.0, dur - last),
@@ -222,7 +265,7 @@ def transcript_features(cues: list[Cue], media_duration: float | None = None) ->
                      "intro": intro[:2], "homework": hw[:3], "recap": recap[:2], "closing": closing[:2],
                      "prev": prev[:2], "tech": tech[:6],
                      "questions": [(q["t"], q["text"]) for q in questions[:6]], "overlaps": overlaps[:5],
-                     "unanswered": unanswered_ex[:5]},
+                     "unanswered": unanswered_ex[:5], "repeated": reps[:5]},
         "talk_bins_teacher": tb, "talk_bins_student": sb,
         "_student_turn_counts": dict(stu_turns), "_teacher_label": teacher,
     }

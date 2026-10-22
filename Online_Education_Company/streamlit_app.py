@@ -23,10 +23,23 @@ from src.scoring.technical import fmt_t
 
 MAX_MIN = float(os.environ.get("MAX_VIDEO_MINUTES", 90))
 MAX_SECONDS = float(os.environ.get("MAX_PROCESSING_SECONDS", 600))
+MAX_UPLOAD_MB = float(os.environ.get("MAX_UPLOAD_MB", 1024))
+WHISPER_MODEL = os.environ.get("WHISPER_MODEL", "tiny")
 COLORS = {"Poor": "#c0392b", "Average": "#d68910", "Good": "#2e86c1", "Excellent": "#1e8449"}
 TEACHER_C, STUDENT_C = "#2e5eaa", "#e08a1e"
 
 st.set_page_config(page_title="Class Quality Assessor", page_icon="🎓", layout="wide")
+
+
+@st.cache_resource(show_spinner="Preparing the local speech model (first run only)...")
+def _warm_speech_model(size: str) -> str | None:
+    """Load the Whisper model once per server process. Returns an error message, or None when ready."""
+    from src.features.asr import WhisperUnavailable, load_model
+    try:
+        load_model(size)
+        return None
+    except WhisperUnavailable as e:
+        return str(e)
 st.title("🎓 Class Quality Assessor")
 st.caption("Upload an 8x8 class recording (and its transcript if you have it) to get a quality verdict with evidence.")
 
@@ -37,8 +50,12 @@ with st.sidebar:
                 "- Nothing is stored or logged.\n"
                 "- An LLM summary is **off** unless the operator enables it; it would receive anonymised text and numbers only.")
     st.header("Options")
-    skip_asr = st.checkbox("Skip local transcription when no transcript is provided", value=True,
-                           help="Whisper on a free CPU host is slow. Without a transcript, interaction scores are unavailable.")
+    use_asr = st.checkbox("Transcribe locally when no transcript is provided", value=True,
+                          help=f"Runs the '{WHISPER_MODEL}' speech model on this server's CPU. Slower on free hosting; stops at the time budget. "
+                               "Without a transcript the who-spoke-when (interaction) scores are not used.")
+    asr_err = _warm_speech_model(WHISPER_MODEL) if use_asr and os.environ.get("PRELOAD_WHISPER", "1") == "1" else None
+    if use_asr and os.environ.get("PRELOAD_WHISPER", "1") == "1":
+        st.caption("Speech model: ready" if asr_err is None else f"Speech model unavailable: {asr_err}")
     st.caption(f"Limits: first {MAX_MIN:.0f} min analysed; {MAX_SECONDS / 60:.0f} min time budget.")
 
 tab_up, tab_link = st.tabs(["Upload", "Paste link"])
@@ -59,6 +76,12 @@ def _render(res: dict) -> None:
     c1.markdown(f"<div style='font-size:14px;color:#666'>Verdict</div><div style='font-size:46px;font-weight:700;color:{COLORS[label]}'>{label}</div>", unsafe_allow_html=True)
     c2.metric("Overall score", f"{sc['overall']:.0f} / 100")
     c3.metric("Confidence", f"{sc['confidence'] * 100:.0f}%", help="Distance from the nearest label boundary × how much of the rubric had data. With a tiny calibration set, treat it as indicative.")
+    if res.get("unavailable"):
+        lines = "\n".join(f"- **{u['signal']}** - {u['reason']}" for u in res["unavailable"])
+        st.warning(f"**Some signals could not be used, so this verdict is less certain (confidence was lowered):**\n{lines}")
+    if res.get("speakers_approximate"):
+        st.info("Teacher/children were separated by voice only (no transcript with speaker names). That split was right about 70% of the time "
+                "on test classes, so who-spoke-when scores were left out of the verdict.")
     for n in res["notes"]:
         st.warning(n)
 
@@ -144,6 +167,10 @@ if go_btn:
     try:
         vtt_file = (up_vtt if up_video else link_vtt) or up_vtt or link_vtt
         if up_video is not None:
+            if up_video.size > MAX_UPLOAD_MB * 1024 * 1024:
+                st.error(f"This file is {up_video.size / 1e6:.0f} MB; the limit on this server is {MAX_UPLOAD_MB:.0f} MB. "
+                         "Trim the recording or paste a link instead.")
+                st.stop()
             video = tmp / "recording.mp4"
             with video.open("wb") as fh:
                 shutil.copyfileobj(up_video, fh)
@@ -157,7 +184,7 @@ if go_btn:
         if vtt_file is not None:
             vtt_path = tmp / "t.vtt"
             vtt_path.write_bytes(vtt_file.getvalue())
-        features = analyze(video, vtt_path, use_cache=False, max_minutes=MAX_MIN, whisper_model="skip" if skip_asr else "base",
+        features = analyze(video, vtt_path, use_cache=False, max_minutes=MAX_MIN, whisper_model=WHISPER_MODEL if use_asr else "skip",
                            progress=lambda f, m: bar.progress(min(1.0, 0.05 + 0.9 * f), text=m), deadline_s=MAX_SECONDS)
         bar.progress(1.0, text=f"Done in {time.time() - started:.0f}s")
         _render(assess(features))

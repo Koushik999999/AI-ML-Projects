@@ -32,7 +32,7 @@ def spearman(a, b):
 FEATS = [("transcript", k) for k in ["teacher_talk_share", "student_turns_per_min", "n_students_asked_individually", "student_top_share",
                                    "questions_per_min", "open_question_share", "median_response_latency_s", "longest_monologue_s",
                                    "longest_student_silence_s", "first_student_after_s", "praise_per_10min", "check_per_10min",
-                                   "energy_marks_per_min", "teacher_words_per_min"]] + \
+                                   "energy_marks_per_min", "teacher_words_per_min", "student_initiated_per_min", "answered_share", "teacher_turn_p90_words", "median_wait_after_question_s", "repetition_rate"]] + \
         [("audio", k) for k in ["speech_ratio", "longest_pause_s", "clipping_ratio", "median_speech_db"]] + \
         [("video", k) for k in ["face_ratio", "screen_ratio", "black_ratio", "change_rate", "dim_face_ratio", "median_face_height_frac"]]
 print("\n== raw features: mean by label (P/A/G/E), Spearman vs ordinal label ==")

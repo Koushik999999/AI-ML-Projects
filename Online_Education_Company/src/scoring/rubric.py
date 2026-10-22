@@ -43,9 +43,21 @@ class Item:
     why: str
 
 
+# Features that depend on knowing who is the teacher / a child. When roles were only inferred from voice
+# (no VTT), these are not scored: that separation was only ~70% accurate on test classes.
+ROLE_DEPENDENT = frozenset({
+    "n_students_asked_individually", "student_turns_per_min", "student_top_share", "median_response_latency_s",
+    "student_initiated_per_min", "answered_share", "longest_monologue_s", "teacher_talk_share",
+    "teacher_turn_p90_words", "median_wait_after_question_s", "repetition_rate"})
+
+
 def _t(f: dict, k: str):  # transcript feature
     t = f.get("transcript") or {}
-    return t.get(k) if t.get("ok") and t.get("has_speakers", True) else None
+    if not (t.get("ok") and t.get("has_speakers", True)):
+        return None
+    if t.get("speakers_approximate") and k in ROLE_DEPENDENT:
+        return None
+    return t.get(k)
 
 
 def _lex(f: dict, k: str):
@@ -85,10 +97,13 @@ DIMENSIONS: dict[str, dict] = {
         Item("new-joiner introduction", lambda f: flag(_lex(f, "has_new_joiner_intro")), 0.30, "children get time to introduce themselves"),
     ]},
     "Individual interaction": {"weight": 0.28, "items": [
-        Item("children asked individually", lambda f: ramp(_t(f, "n_students_asked_individually"), 1, 6), 0.30, "distinct children who answer a direct question"),
-        Item("student turns per minute", lambda f: ramp(_t(f, "student_turns_per_min"), 2.0, 8.0), 0.30, "how often children speak"),
-        Item("participation spread", lambda f: ramp(_t(f, "student_top_share"), 0.75, 0.35), 0.20, "one child should not dominate"),
-        Item("response latency", lambda f: ramp(_t(f, "median_response_latency_s"), 2.0, 0.6), 0.20, "children answer quickly when engaged"),
+        Item("children asked individually", lambda f: ramp(_t(f, "n_students_asked_individually"), 1, 6), 0.20, "distinct children who answer a direct question"),
+        Item("student turns per minute", lambda f: ramp(_t(f, "student_turns_per_min"), 2.0, 8.0), 0.20, "how often children speak"),
+        Item("participation spread", lambda f: ramp(_t(f, "student_top_share"), 0.75, 0.35), 0.10, "one child should not dominate"),
+        Item("response latency", lambda f: ramp(_t(f, "median_response_latency_s"), 2.0, 0.6), 0.15, "children answer quickly when engaged"),
+        # v2 (ranges fixed before looking at results): children speak up on their own, and questions get answered
+        Item("student-initiated turns per minute", lambda f: ramp(_t(f, "student_initiated_per_min"), 0.3, 2.0), 0.15, "children speak without being asked"),
+        Item("questions that get an answer", lambda f: ramp(_t(f, "answered_share"), 0.4, 0.85), 0.20, "share of teacher questions answered within 20 s"),
     ]},
     "Energy & positivity": {"weight": 0.15, "items": [
         Item("praise rate", lambda f: ramp(_lex(f, "praise_per_10min"), 1.0, 8.0), 0.6, "praise / encouragement per 10 min"),
@@ -102,9 +117,9 @@ DIMENSIONS: dict[str, dict] = {
         Item("no long teacher monologue", lambda f: ramp(_t(f, "longest_monologue_s"), 600, 120), 0.15, "longest uninterrupted teacher stretch"),
     ]},
     "Pacing & flow": {"weight": 0.10, "items": [
-        Item("speech vs dead air", lambda f: ramp(_a(f, "speech_ratio"), 0.35, 0.70), 0.5, "share of the recording with speech"),
-        Item("long pauses (>8 s) per hour", lambda f: ramp(_pauses_per_hour(f), 40, 5), 0.3, "dead-air episodes inside the session"),
-        Item("talk balance", lambda f: band(_t(f, "teacher_talk_share"), 0.9, 0.40, 0.65, 0.95), 0.2, "teacher share of talk time"),
+        Item("speech vs dead air", lambda f: ramp(_a(f, "speech_ratio"), 0.35, 0.70), 0.50, "share of the recording with speech"),
+        Item("long pauses (>8 s) per hour", lambda f: ramp(_pauses_per_hour(f), 40, 5), 0.30, "dead-air episodes inside the session"),
+        Item("talk balance", lambda f: band(_t(f, "teacher_talk_share"), 0.9, 0.40, 0.65, 0.95), 0.20, "teacher share of talk time"),
     ]},
     "Presentation": {"weight": 0.15, "items": [
         Item("something useful on screen", _visual_content, 0.40, "face or shared content is visible, not black/empty"),
@@ -144,7 +159,29 @@ def label_for(overall: float, cuts: tuple[float, float, float] = DEFAULT_CUTS) -
     return LABELS[sum(overall >= c for c in cuts)]
 
 
-def score(f: dict, cuts: tuple[float, float, float] = DEFAULT_CUTS, exclude: set[str] | None = None) -> Score:
+# Confidence ceilings per label. Leave-one-out showed only the Excellent boundary is well supported; the
+# Poor/Average/Good boundaries rest on 2 examples each, so those labels can never look very certain.
+LABEL_CAP = {"Poor": 0.65, "Average": 0.65, "Good": 0.65, "Excellent": 0.85}
+MARGIN_FULL_POINTS = 15.0  # distance (score points) from the nearest cut-off at which boundary certainty saturates
+
+
+def confidence_for(overall: float, label: str, cuts: tuple[float, float, float], coverage: float, reliability: float = 1.0) -> float:
+    """Confidence = boundary distance x label ceiling x signal availability x signal reliability.
+
+    * borderline scores (near a cut-off) get low confidence;
+    * `coverage` = share of rubric weight that had data (missing transcript etc. lowers it; under half caps it at 0.25);
+    * `reliability` < 1 when signals are approximate (ASR transcript, inferred speaker roles, garbled language).
+    """
+    margin = min(abs(overall - c) for c in cuts)
+    boundary = 0.25 + 0.75 * min(1.0, margin / MARGIN_FULL_POINTS)          # 0.25 on a cut-off .. 1.0 when far from all
+    conf = LABEL_CAP[label] * boundary * (0.4 + 0.6 * coverage) * reliability
+    if coverage < 0.5:
+        conf = min(conf, 0.25)
+    return round(max(0.05, min(conf, LABEL_CAP[label])), 2)
+
+
+def score(f: dict, cuts: tuple[float, float, float] = DEFAULT_CUTS, exclude: set[str] | None = None,
+          reliability: float = 1.0) -> Score:
     """`exclude` removes dimensions (e.g. Presentation when the platform, not the teacher, caused the fault)."""
     dims, items = {}, {}
     num = den = 0.0
@@ -158,9 +195,5 @@ def score(f: dict, cuts: tuple[float, float, float] = DEFAULT_CUTS, exclude: set
     coverage = den / total_w if total_w else 0.0
     overall = num / den if den else 0.0
     label = label_for(overall, cuts)
-    # confidence: distance to the nearest cut-off (in points) and how much of the rubric had data
-    margin = min(abs(overall - c) for c in cuts)
-    confidence = round(min(0.95, 0.35 + margin / 12.0) * (0.5 + 0.5 * coverage), 2)
-    if coverage < 0.5:  # most of the rubric had no data: never present this as a confident verdict
-        confidence = min(confidence, 0.25)
-    return Score(round(overall, 1), label, confidence, {k: (None if v is None else round(v, 1)) for k, v in dims.items()}, items, coverage)
+    return Score(round(overall, 1), label, confidence_for(overall, label, cuts, coverage, reliability),
+                 {k: (None if v is None else round(v, 1)) for k, v in dims.items()}, items, coverage)

@@ -76,3 +76,14 @@ def test_anonymise_redacts_asr_mangled_names():
     out = anonymise("YUVAN KOLECO, are you there? Hello Priya, good job Ravi! Okay let us start.", ["Ravi Kumar"], "Ms T")
     assert "YUVAN" not in out and "Priya" not in out and "Ravi" not in out
     assert "let us start" in out  # ordinary words are untouched
+
+
+def test_confidence_low_when_borderline_and_capped_by_label():
+    from src.scoring.rubric import confidence_for
+    cuts = (42, 56, 72)
+    far = confidence_for(88, "Excellent", cuts, 1.0)
+    border = confidence_for(56.5, "Good", cuts, 1.0)
+    assert far > 0.8 and border < 0.3                      # distance to cut-off matters
+    assert confidence_for(10, "Poor", cuts, 1.0) <= 0.65   # weakly supported labels never look certain
+    assert confidence_for(88, "Excellent", cuts, 0.4) <= 0.25   # missing signals cap confidence
+    assert confidence_for(88, "Excellent", cuts, 1.0, 0.7) < far   # unreliable signals lower it

@@ -26,7 +26,7 @@ streamlit run streamlit_app.py
 pytest -q                                                 # pip install -r requirements-dev.txt first
 ```
 
-Hosted (Streamlit Community Cloud): main file `streamlit_app.py`, Python 3.11 or 3.12, `packages.txt` installs ffmpeg.
+Hosted: see `docs/hosting.md` (Hugging Face Docker Space recommended; Streamlit Community Cloud with Python 3.11). ffmpeg comes bundled via `imageio-ffmpeg`.
 Free tiers are weak: provide the `.vtt` (fast, and gives speaker labels) rather than relying on local Whisper.
 
 ## How it works
@@ -57,20 +57,36 @@ See `docs/findings.md` for what the data showed and `docs/explanation.md` for th
 ```
 streamlit_app.py        UI
 src/vtt.py, media.py    parsing, ffmpeg helpers
-src/features/           audio.py, video.py, transcript.py, asr.py
+src/features/           audio.py, video.py, transcript.py, asr.py (Whisper), speakers.py (label-free split)
 src/scoring/            rubric.py, technical.py, explain.py, calibration.json
 src/pipeline.py         orchestration, caching, time caps, graceful degradation
 src/assess.py           features -> verdict + observations
 src/fetch.py, llm.py    link download (SSRF-guarded), optional anonymised LLM narrative
 scripts/                dataset analysis, calibration, leave-one-out, data-leak guard
 tests/                  unit tests for scoring logic
-docs/                   findings, explanation, ai_history
+deploy/                 Dockerfile + Space README (used by scripts/make_space_bundle.py)
+docs/                   findings, explanation, hosting, ai_history, submission_checklist
 ```
+
+## No transcript? (the likely case for a new upload)
+
+Upload the `.mp4` alone and the app transcribes it locally with faster-whisper (`WHISPER_MODEL`, default `tiny`, int8, CPU,
+5-minute windows, time-capped), then separates teacher/children by voice. That split is about 70% accurate, so who-spoke-when
+scores are not used; wording, audio and video are. The result shows a banner listing exactly which signals were unavailable and why,
+and the confidence is lowered. If the speech model cannot load, the app still returns a verdict from audio/video only.
+On two full test classes the verdict was unchanged without the transcript (Excellent, Poor), at lower confidence. Malayalam speech is
+not handled by the small Whisper models (they write Tamil script); wording checks switch off automatically.
+
+## Hosting
+
+See `docs/hosting.md`: Streamlit Community Cloud (subfolder entrypoint) and a Hugging Face Docker Space built from a
+data-free bundle (`python scripts/make_space_bundle.py OUT_DIR`).
 
 ## Limitations
 
-* Calibrated on **8 labelled classes (2 per label)**; the cut-offs are a sanity-checked heuristic, not a trained model.
+* Calibrated on **8 labelled classes (2 per label)**; the cut-offs are a hand-set heuristic, not a trained model. Leave-one-out exact accuracy is
+  3/8 (within one class 6/8); only Excellent vs the rest is reliable. See `docs/findings.md`.
 * Pedagogy cues are keyword-based on machine-made transcripts (names and Malayalam are often garbled).
-* Without a VTT there are no speaker labels, so interaction cannot be measured; local Whisper is slow on free CPUs and weaker on Malayalam.
-* Video analysis is coarse: the recordings mostly show the shared screen, so the teacher's face is a small tile.
-* Not tested here: the Whisper path on real audio (model download was blocked on the development machine).
+* Without a VTT there are no speaker labels; the voice-based split is approximate, so interaction is not scored.
+* Video analysis is coarse: the recordings mostly show the shared screen, so the teacher's face is a small tile. Tone and the 8x8 background are not measured.
+* Not run yet: the Docker image and the hosted deployments.

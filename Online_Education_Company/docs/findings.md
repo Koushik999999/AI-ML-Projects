@@ -50,19 +50,78 @@ Rubric dimensions derived from this: **Rapport & opening**, **Individual interac
 
 Level matters: the same signal has different baselines. Intermediate classes have fewer, longer child turns (student turns/min 1.7-2.4 for the three non-excellent Intermediate classes vs. 3.3-5.6 for the non-excellent Beginner ones; Excellent: 7.4 vs. 9.4) and longer teacher stretches because children work on a board while the teacher is silent. The rubric uses the same ranges for both levels (no level input exists for an unseen upload), which is a known weakness.
 
-## 5. Results and honest validation
+## 5. Results and honest validation (round 2: before / after)
 
-Rubric scores (0-100): Excellent 82/86, Good 66/49, Average 50/48, Poor 33/71.
+Cut-offs were **not changed** (42 / 56 / 72). "v1" = rubric of round 1. "v3" = after adding general interaction features (below).
 
-* **In-sample** (cut-offs 42/56/72 set by eye on these same 8): exact 6/8, within one class 7/8.
-* **Leave-one-out** (cut-offs refit as midpoints between class means on 7 recordings): exact **4/8**, within one class **6/8**, Spearman 0.69; majority baseline 2/8. This is the number to trust, and with n=8 it is a sanity check, not a performance claim.
-* **Reliable:** Excellent vs. the rest (both Excellent score >=81, everything else <=71) and the weakest class when its problems are visible in interaction (B482: 33).
-* **Misses, kept in the report:**
-  * **B558 (Poor) scores 71.** The reviewer's complaints (weak intro/conclusion, no time for new joiners, not pleasant enough) are about tone and structure that keyword matching cannot see: it greets, asks "how are you", praises often. Its real, detectable issue (7.5 min with no child speaking) is reported in the observations, but the overall score is too high.
-  * **B435 Good scores 49** and lands in Average: its transcript is sparse (246 cues) and has little praise and a 14-min silent stretch, while the reviewer valued intro and individual consideration.
-  * The class means are not even monotone (Poor 52 > Average 49) because of B558, so the Poor/Average/Good boundaries are weakly supported by 2 examples each.
-* Changes made after looking at results, listed so they are not mistaken for clean tuning: fixed "Good evening" being counted as praise, "I'm good" not counted as praise, ignored lobby footage before the class starts when flagging frozen video, merged adjacent dropouts. None of them changed a label. Cut-offs were set once, by eye.
+| | v1 | v3 (current) |
+|---|---|---|
+| Scores: Excellent | 82 / 86 | 84 / 86 |
+| Scores: Good | 66 / 49 | 68 / 48 |
+| Scores: Average | 50 / 48 | 52 / 50 |
+| Scores: Poor | 33 / **71** (B482 / B558) | 35 / **75** |
+| In-sample exact / within one (cut-offs set by eye on the same 8) | 6/8, 7/8 | 6/8, 7/8 |
+| **Leave-one-out** exact / within one | **4/8**, 6/8 | **3/8**, 6/8 |
+| Spearman(score, label) | 0.69 | 0.67 |
+| Majority-class baseline | 2/8 | 2/8 |
 
-## 6. Limitations to state plainly
+**Result: no improvement; slightly worse.** B558 (Poor) went from 71 to 75, so it is still scored Excellent in-sample. The one-recording drop in leave-one-out (4/8 -> 3/8) comes from the refit cut-offs moving, i.e. it is noise at n=8, but it is not better either.
 
-Calibrated on 8 labelled classes; keyword cues on machine transcripts; tone, friendliness and the 8x8 background itself are **not** measured (a template detector would need the brand asset and more examples); face detection is coarse because the face is a small tile; without a VTT there are no speaker labels, so interaction cannot be assessed; the local Whisper fallback could not be run on real audio here because model downloads were blocked on this machine.
+### The new general features and what happened to each
+
+Definitions and the "good" direction were fixed **before** looking at any result; none was designed around B558.
+
+| Feature | Expected | Observed across the 8 (Spearman) | Decision |
+|---|---|---|---|
+| student-initiated turns per min (child speaks without a teacher question just before) | more is better | +0.67 (Excellent 3.7, Good-B552 3.6, Poor 0.9 / 2.2) | **kept** |
+| share of teacher questions that get an answer within 20 s | more is better | +0.43, but 0.73-0.99 everywhere (saturates) | **kept**, low information |
+| wait (silence) after a question before anyone speaks | 1.5-6 s is better ("think time") | **-0.62**: the best classes wait least (0.5 s); it is reply latency in disguise | **removed** (premise contradicted) |
+| teacher turn length, 90th percentile words | shorter is better | **+0.50**: wrong sign (Excellent 25, Average 32) | **removed** (flipping the sign to fit would be fitting) |
+| near-repeated teacher instruction (Jaccard >= 0.8 within 2 min) | less is better | 0-3% in every class; sign opposite | **removed** (no information at this base rate) |
+
+Why B558 does not move: its remaining deficits per the reviewer (weak intro/conclusion, no time for new joiners, not "energetic and pleasant") are tone and structure. Its children do speak up on their own (2.2 initiated turns/min) and its questions are answered (0.98), so general interaction features rightly score it well. **These features cannot, and should not, be expected to fix it.**
+
+### Confidence (changed)
+
+Old confidence ignored how weakly the labels are supported. New formula: `label ceiling x boundary distance x signal availability x signal reliability`.
+* boundary distance: 0.25 on a cut-off rising to 1.0 at 15+ points away;
+* ceilings from the validation above: Excellent 0.85, Poor/Average/Good 0.65 (2 examples each);
+* availability: share of rubric weight that had data (under half caps at 0.25); reliability x0.85 for a local-ASR transcript, x0.85 for a garbled language.
+Examples: clear Excellent B491 0.82; borderline Average B435 0.28; Good B552 0.28; the B558 miss 0.35 (3 points under the Excellent cut); Malayalam demo 0.23.
+
+### What to trust
+
+* **Reliable:** Excellent vs the rest, and a very weak interaction profile (B482).
+* **Not reliable:** Poor vs Average vs Good ordering, and any single mid-range score. B558 is an acknowledged miss; B435-Good (48) lands in Average because its transcript is sparse and has a 14-minute silent stretch.
+* Earlier post-hoc bug fixes (listed so they are not mistaken for tuning): "Good evening" no longer counts as praise, "I'm good" ignored, lobby footage before the session ignored for frozen video, adjacent dropouts merged. None changed a label.
+
+## 6. No-transcript path (the likely test scenario)
+
+The organisers may upload an `.mp4` with no `.vtt`. The app then runs **local faster-whisper** (int8, CPU, 5-minute windows, time budget, progress messages), then infers teacher/children from voice.
+
+**Measured here on real audio** (model `tiny`, int8, on the development laptop's CPU; the platform transcript is the reference, which is itself machine-made):
+
+| Recording | Audio | Transcription time | Word-overlap F1 vs platform transcript | Speaker split agreement | Verdict with VTT -> without VTT (confidence) |
+|---|---|---|---|---|---|
+| B491 (Excellent) | 53.9 min | 3.0 min (0.06x realtime) | 0.80 | 0.68 | Excellent -> Excellent (0.82 -> 0.17) |
+| B482 (Poor) | 59.2 min | 1.1 min (0.02x; VAD skips silence) | 0.79 | 0.72 | Poor -> Poor (0.48 -> 0.46) |
+
+Two recordings, so this shows the path works and the verdict can survive, not that it always will. A free-tier CPU will be several times slower than this laptop: the 10-minute budget may transcribe only part of a long class (the app says so and lowers confidence).
+
+**Speaker separation without labels** (`scripts/speaker_eval.py`, ground truth = VTT speaker names, time-weighted, 12 recordings):
+
+| Method | Accuracy | "Call everyone Teacher" baseline |
+|---|---|---|
+| pitch + spectral centroid, 2-means | 0.63 | 0.64 (**no better than baseline**) |
+| voice timbre (mean log-mel), 2-means, bigger cluster = Teacher | **0.68** | 0.64 |
+
+It beats the baseline on 8 of 12 recordings and is inverted (roles swapped) on 4 (e.g. B435-Good 0.07, B558 0.36), and its own separation score does not predict which. **Decision:** the split is shipped as approximate, the app says so, and all role-dependent scoring items (child turns, latency, initiated turns, answered share, monologue, talk balance) are **switched off** when roles are inferred. Wording cues are computed over all speech instead, so a mislabelled role cannot hide or invent a "teacher said it" cue. Consequence: without a VTT the "Individual interaction" dimension is n/a, coverage drops to about 0.72, and confidence is lowered and the missing signals are listed in a banner.
+
+**Malayalam, tested on the Malayalam demo (5 min):** Whisper `tiny` and `base` both detect language `ml` but write the text in **Tamil script** (about 310 non-Latin characters, 0 Malayalam script), i.e. the output is wrong, not just noisy. Its English-word rate is 0.18 (< 0.40), so the garbled-language guard switches off the wording checks and the verdict is built from audio, video and, only if a VTT exists, turn-taking. A larger Whisper model would be needed for real Malayalam support; it is not feasible on a free CPU tier.
+
+Failure behaviour (tested): model cannot load -> `WhisperUnavailable` -> verdict from audio/video only, banner "transcript and who-said-what: unavailable, reason ...", confidence capped at 0.25; time budget hit -> partial transcript with a warning; Whisper fails mid-way -> keeps the transcript so far.
+Network note: Hugging Face was unreachable from this machine at the start of the session and reachable later (intermittent); the model download that finally worked is what made the real evaluation above possible. On the Space the model is baked into the Docker image.
+
+## 7. Limitations to state plainly
+
+Calibrated on 8 labelled classes (2 per label); keyword cues on machine transcripts; tone, friendliness and the 8x8 background itself are **not** measured; the teacher's face is a small tile so face signals are coarse; Malayalam is not handled by either ASR (see section 6), so wording cues switch off there; the speaker split without a VTT is only about 70% right; the Docker/Space deployment and the Streamlit Cloud deployment have not been run.
