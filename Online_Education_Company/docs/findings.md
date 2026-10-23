@@ -142,6 +142,20 @@ What changes: those items are marked "not assessable on a partial recording", le
 
 **Caveats.** After reweighting, "Structure & clarity" on a clip rests on only two items (comprehension checks and longest monologue), so it is a thin dimension there. The 20-minute and 10-minute thresholds are conventions: a 25-minute lesson that is genuinely short would be treated as complete. A clip whose transcript timestamps are re-based to 0:00 can only be caught by its duration.
 
-## 8. Limitations to state plainly
+## 8. Hosted results (Streamlit Community Cloud, free tier)
 
-Calibrated on 8 labelled classes (2 per label); keyword cues on machine transcripts; tone, friendliness and the 8x8 background itself are **not** measured; the teacher's face is a small tile so face signals are coarse; Malayalam is not handled by either ASR (see section 6), so wording cues switch off there; the speaker split without a VTT is only about 70% right; the Docker/Space deployment and the Streamlit Cloud deployment have not been run.
+**Hosting detour.** The plan was a Hugging Face Docker Space; Docker Spaces were paid-only on the author's account, so the app was deployed on Streamlit Community Cloud instead (`deploy/` and the Space instructions in `docs/hosting.md` are unused).
+
+**Tests** use only non-confidential public videos (never the class recordings), all uploaded with **no transcript**, so local speech recognition ran on the hosted CPU:
+
+| Input | Length / size | Upload | Google Drive link |
+|---|---|---|---|
+| short clip | 5 min | finished in 9 s | identical result |
+| lecture | 80 min, 105 MB | finished in 122 s | identical result, 146 s (includes Drive's large-file confirmation page) |
+
+* A YouTube page link is rejected with a clear message (it is a web page, not a video file).
+* Not verified on the hosted app: the 10-minute budget fallback (it was tested locally with a fake slow model and a short deadline), and the Hugging Face route.
+
+## 9. Limitations to state plainly
+
+Platform-dropout detection can mistake natural silence in screen-recorded lessons for audio cut-outs; the short-class thresholds (20 and 10 min) are round numbers; the budget fallback was tested locally, not on the hosted app; calibrated on 8 labelled classes (2 per label); keyword cues on machine transcripts; tone, friendliness and the 8x8 background itself are **not** measured; the teacher's face is a small tile so face signals are coarse; Malayalam is not handled by either ASR (see section 6), so wording cues switch off there; the speaker split without a VTT is only about 70% right; the Docker/Space route was never built.

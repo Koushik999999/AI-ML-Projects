@@ -58,3 +58,9 @@ New standing rule from the user: the assistant never runs git commands that chan
 | 32 | Choosing "near 0:00". | The labelled classes begin speaking at 0:21-4:08 (one demo at 7:19), so a strict "near zero" would flag real classes; 10 minutes was chosen as clearly "the opening is not here". Noted that a clip whose subtitles are re-timed to 0:00 can only be caught by duration. |
 | 33 | First unit test failed (29.7 vs 29.8). | Not a code bug: my "rich" fixture also added a child turn. Rewrote the test to flip only the opening/closing flags on identical features and assert exact equality, plus the converse (on a full class the same flags DO change the score). |
 | 34 | Proof that full-length results are unchanged. | Saved the analysis output before the change and diffed after: identical (features, scores, in-sample, leave-one-out 3/8, Spearman 0.67); none of the 12 local recordings is flagged partial; 6 spot-checked label/score/confidence lines identical. Real-data check on a 4-minute clip from an Excellent class. |
+
+## Session 4 — hosted results (docs only)
+
+| # | Prompt / intent | Decision, result, failure, fix |
+|---|---|---|
+| 35 | User reported hosted results on Streamlit Community Cloud. | Docs only, no code changes. Hugging Face Docker Spaces were paid-only on the user's account, so hosting moved to Streamlit Cloud. Hosted tests used public non-confidential videos: 5-min and 80-min (105 MB) clips without a transcript finished in 9 s and 122 s; the same files via Google Drive gave identical results (146 s for the long one); a YouTube page link is rejected with a clear message. Recorded in `docs/findings.md` section 9 (numbers are the user's, not re-measured by the assistant). Added three limitations: dropout detection vs natural silence, round-number short-class thresholds, budget fallback only tested locally. |

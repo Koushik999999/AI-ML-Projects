@@ -1,5 +1,7 @@
 # Hosting guide
 
+> **Outcome:** Hugging Face Docker Spaces were paid-only on the author's account, so the app runs on **Streamlit Community Cloud** (route a): https://onlineeducationcompany-5w7mmuuyhoazetwutxvdhx.streamlit.app/ . Route (b) is kept for reference only and was never run.
+
 Two routes. **Route B (Hugging Face Space) is recommended**: it bakes the speech model into the image, so uploads without a transcript work on first use. Route A is the quickest fallback.
 
 I (the assistant) did not run any of the commands below, and did not create or change anything inside `.git`. Neither route has been deployed or tested on the real hosts; the local code path is tested.

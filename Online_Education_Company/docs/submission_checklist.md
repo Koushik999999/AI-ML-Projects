@@ -24,9 +24,9 @@ Everything below is for you to run; the assistant does not run git commands that
 
 - Leave-one-out accuracy 3/8 exact, 6/8 within one class; only Excellent vs the rest is reliable.
 - One Poor class (B558) is scored Excellent; tone is not measured.
-- Docker image and both hosted deployments are untested.
+- Hosted on Streamlit Cloud and tested with public videos only (5-min and 80-min, upload and Drive link). The Docker/Space route was never run, and the 10-minute budget fallback was only tested locally.
 - Free-tier CPU may transcribe only part of a long class within the time budget.
 
 ## Form fields
 
-Hosted link - GitHub repo - AI history (`docs/ai_history.md`) - explanation (`docs/explanation.md`, 265 words).
+Hosted link (https://onlineeducationcompany-5w7mmuuyhoazetwutxvdhx.streamlit.app/) - GitHub repo - AI history (`docs/ai_history.md`) - explanation (`docs/explanation.md`, 297 words).

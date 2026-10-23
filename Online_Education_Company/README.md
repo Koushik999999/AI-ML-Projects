@@ -1,5 +1,7 @@
 # Class Quality Assessor
 
+**Live app (Streamlit Community Cloud):** https://onlineeducationcompany-5w7mmuuyhoazetwutxvdhx.streamlit.app/
+
 Upload (or link) an 8x8 online-class recording, optionally with its platform transcript (`.vtt`), and get a
 **Poor / Average / Good / Excellent** verdict, per-dimension scores, a timeline, and 3-6 specific, timestamped
 observations with concrete suggestions. Technical/platform faults are flagged **separately** and are not held against the teacher.
@@ -26,7 +28,7 @@ streamlit run streamlit_app.py
 pytest -q                                                 # pip install -r requirements-dev.txt first
 ```
 
-Hosted: see `docs/hosting.md` (Hugging Face Docker Space recommended; Streamlit Community Cloud with Python 3.11). ffmpeg comes bundled via `imageio-ffmpeg`.
+Hosted on Streamlit Community Cloud (see `docs/hosting.md`, Python 3.11). ffmpeg comes bundled via `imageio-ffmpeg`.
 Free tiers are weak: provide the `.vtt` (fast, and gives speaker labels) rather than relying on local Whisper.
 
 ## How it works
@@ -86,6 +88,7 @@ partial class: opening-only and closing-only checks (rapport check-in, greeting,
 
 ## Hosting
 
+Live at https://onlineeducationcompany-5w7mmuuyhoazetwutxvdhx.streamlit.app/ (Streamlit Community Cloud, free tier). Hugging Face Docker Spaces were paid-only on the author's account, so that route was not used.
 See `docs/hosting.md`: Streamlit Community Cloud (subfolder entrypoint) and a Hugging Face Docker Space built from a
 data-free bundle (`python scripts/make_space_bundle.py OUT_DIR`).
 
@@ -96,4 +99,7 @@ data-free bundle (`python scripts/make_space_bundle.py OUT_DIR`).
 * Pedagogy cues are keyword-based on machine-made transcripts (names and Malayalam are often garbled).
 * Without a VTT there are no speaker labels; the voice-based split is approximate, so interaction is not scored.
 * Video analysis is coarse: the recordings mostly show the shared screen, so the teacher's face is a small tile. Tone and the 8x8 background are not measured.
-* Not run yet: the Docker image and the hosted deployments.
+* The Docker/Hugging Face route (`deploy/`) was never built or run. Hosted results are in `docs/findings.md` section 9.
+* Platform-dropout detection can mistake natural silence in screen-recorded lessons for audio cut-outs.
+* Short-class thresholds (20 and 10 min) are round numbers, not fitted.
+* The 10-minute budget fallback was tested locally, not on the hosted app.
