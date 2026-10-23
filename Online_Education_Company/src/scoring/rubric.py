@@ -10,6 +10,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
+from src.scoring.partial import Partial, partial_info
+
 LABELS = ["Poor", "Average", "Good", "Excellent"]
 
 
@@ -41,6 +43,7 @@ class Item:
     get: Callable[[dict], float | None]   # returns a 0..1 score or None when unavailable
     weight: float
     why: str
+    phase: str | None = None   # 'opening' / 'closing': only assessable if that part of the class is in the recording
 
 
 # Features that depend on knowing who is the teacher / a child. When roles were only inferred from voice
@@ -92,9 +95,9 @@ def _visual_content(f: dict) -> float | None:
 
 DIMENSIONS: dict[str, dict] = {
     "Rapport & opening": {"weight": 0.15, "items": [
-        Item("rapport question in opening", lambda f: flag(_lex(f, "has_rapport")), 0.45, "teacher asks the children how they are/how their day was in the first minutes"),
-        Item("greeting", lambda f: flag(_lex(f, "has_greeting")), 0.25, "class opens with a greeting"),
-        Item("new-joiner introduction", lambda f: flag(_lex(f, "has_new_joiner_intro")), 0.30, "children get time to introduce themselves"),
+        Item("rapport question in opening", lambda f: flag(_lex(f, "has_rapport")), 0.45, "teacher asks the children how they are/how their day was in the first minutes", "opening"),
+        Item("greeting", lambda f: flag(_lex(f, "has_greeting")), 0.25, "class opens with a greeting", "opening"),
+        Item("new-joiner introduction", lambda f: flag(_lex(f, "has_new_joiner_intro")), 0.30, "children get time to introduce themselves", "opening"),
     ]},
     "Individual interaction": {"weight": 0.28, "items": [
         Item("children asked individually", lambda f: ramp(_t(f, "n_students_asked_individually"), 1, 6), 0.20, "distinct children who answer a direct question"),
@@ -111,9 +114,9 @@ DIMENSIONS: dict[str, dict] = {
     ]},
     "Structure & clarity": {"weight": 0.17, "items": [
         Item("checks understanding", lambda f: ramp(_lex(f, "check_per_10min"), 3.0, 10.0), 0.25, "'understood?' / 'any doubt?' per 10 min"),
-        Item("homework given", lambda f: flag(_lex(f, "has_homework")), 0.25, "homework is assigned"),
-        Item("recap", lambda f: flag(_lex(f, "has_recap")), 0.20, "lesson is summarised near the end"),
-        Item("closing", lambda f: flag(_lex(f, "has_closing")), 0.15, "proper conclusion / goodbye"),
+        Item("homework given", lambda f: flag(_lex(f, "has_homework")), 0.25, "homework is assigned", "closing"),
+        Item("recap", lambda f: flag(_lex(f, "has_recap")), 0.20, "lesson is summarised near the end", "closing"),
+        Item("closing", lambda f: flag(_lex(f, "has_closing")), 0.15, "proper conclusion / goodbye", "closing"),
         Item("no long teacher monologue", lambda f: ramp(_t(f, "longest_monologue_s"), 600, 120), 0.15, "longest uninterrupted teacher stretch"),
     ]},
     "Pacing & flow": {"weight": 0.10, "items": [
@@ -140,19 +143,26 @@ class Score:
     dimensions: dict[str, float | None]
     items: dict[str, list[dict]] = field(default_factory=dict)
     coverage: float = 1.0
+    partial: Partial = field(default_factory=Partial)
 
 
-def score_dimension(f: dict, dim: str) -> tuple[float | None, list[dict]]:
-    items, num, den = [], 0.0, 0.0
+def score_dimension(f: dict, dim: str, part: Partial | None = None) -> tuple[float | None, list[dict]]:
+    """Score one dimension. Items whose phase is not in the recording are 'not assessable': they are left out of the numerator AND
+    of the availability threshold, so the remaining items are reweighted instead of the dimension being punished."""
+    part = part or Partial()
+    items, num, den, total = [], 0.0, 0.0, 0.0
     for it in DIMENSIONS[dim]["items"]:
-        s = it.get(f)
-        items.append({"item": it.name, "score": s, "weight": it.weight, "why": it.why})
+        na = (it.phase == "opening" and part.skip_opening) or (it.phase == "closing" and part.skip_closing)
+        s = None if na else it.get(f)
+        items.append({"item": it.name, "score": s, "weight": it.weight, "why": it.why, "not_assessable": na})
+        if na:
+            continue
+        total += it.weight
         if s is not None:
             num += s * it.weight
             den += it.weight
-    total = sum(it.weight for it in DIMENSIONS[dim]["items"])
     # under half the evidence available -> do not pretend the dimension was measured
-    return (100 * num / den if den >= 0.5 * total else None), items
+    return (100 * num / den if total and den >= 0.5 * total else None), items
 
 
 def label_for(overall: float, cuts: tuple[float, float, float] = DEFAULT_CUTS) -> str:
@@ -183,10 +193,11 @@ def confidence_for(overall: float, label: str, cuts: tuple[float, float, float],
 def score(f: dict, cuts: tuple[float, float, float] = DEFAULT_CUTS, exclude: set[str] | None = None,
           reliability: float = 1.0) -> Score:
     """`exclude` removes dimensions (e.g. Presentation when the platform, not the teacher, caused the fault)."""
+    part = partial_info(f)
     dims, items = {}, {}
     num = den = 0.0
     for d, spec in DIMENSIONS.items():
-        s, it = score_dimension(f, d)
+        s, it = score_dimension(f, d, part)
         dims[d], items[d] = s, it
         if s is not None and d not in (exclude or set()):
             num += s * spec["weight"]
@@ -195,5 +206,5 @@ def score(f: dict, cuts: tuple[float, float, float] = DEFAULT_CUTS, exclude: set
     coverage = den / total_w if total_w else 0.0
     overall = num / den if den else 0.0
     label = label_for(overall, cuts)
-    return Score(round(overall, 1), label, confidence_for(overall, label, cuts, coverage, reliability),
-                 {k: (None if v is None else round(v, 1)) for k, v in dims.items()}, items, coverage)
+    return Score(round(overall, 1), label, confidence_for(overall, label, cuts, coverage, reliability * part.reliability),
+                 {k: (None if v is None else round(v, 1)) for k, v in dims.items()}, items, coverage, part)

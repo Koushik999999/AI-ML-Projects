@@ -122,6 +122,26 @@ It beats the baseline on 8 of 12 recordings and is inverted (roles swapped) on 4
 Failure behaviour (tested): model cannot load -> `WhisperUnavailable` -> verdict from audio/video only, banner "transcript and who-said-what: unavailable, reason ...", confidence capped at 0.25; time budget hit -> partial transcript with a warning; Whisper fails mid-way -> keeps the transcript so far.
 Network note: Hugging Face was unreachable from this machine at the start of the session and reachable later (intermittent); the model download that finally worked is what made the real evaluation above possible. On the Space the model is baked into the Docker image.
 
-## 7. Limitations to state plainly
+## 7. Partial recordings (clips, late starts, cut-off analysis)
+
+**Problem.** A clip from the middle of a lesson has no greeting, recap, goodbye or homework only because those moments are not in it. Scoring their absence is a measurement error, and so is praising their presence.
+
+**General rule** (round-number thresholds, not fitted to any sample class; `src/scoring/partial.py`):
+
+| Trigger | Opening checks (rapport check-in, greeting, new-joiner intro) | Closing checks (homework, recap, closing) |
+|---|---|---|
+| recording shorter than 20 min | not assessable | not assessable |
+| first speech after 10 min | not assessable | not assessable |
+| analysis cut off before the end (90-min cap, or Whisper time budget hit) | assessed | not assessable |
+
+What changes: those items are marked "not assessable on a partial recording", left out of the score **and** of the "is there enough evidence" threshold, so the remaining items in the same dimension are reweighted (a dimension whose items are all opening-only, "Rapport & opening", drops out and the other dimensions are reweighted by the existing mechanism). The explainer stops reporting absent *or* present opening/closing behaviour. Per-minute rate signals are untouched: praise rate, talk balance, child turns, reply latency, silences, monologues, pacing, presentation. The result shows a banner naming the reason and the checks that were skipped. Confidence is multiplied by 0.8 (opening and closing skipped) or 0.9 (end only), on top of the existing coverage term.
+
+**Effect on the labelled classes: none.** All local recordings run 38-89 min and start speaking between 0:21 and 4:08, so none is partial. I re-ran the analysis and diffed it against the saved pre-change output: raw feature table, per-class scores, in-sample result, leave-one-out (3/8 exact, 6/8 within one) and Spearman (0.67) are byte-identical, and label, score and confidence for six spot-checked recordings are identical.
+
+**Real-data check.** A 4-minute clip taken from minute 10 of an Excellent class (with its re-timed transcript): Rapport & opening is n/a, six checks are listed as not assessable, the score rests on interaction, energy, the remaining structure items (comprehension checks, monologue), pacing and presentation (Excellent, 75, confidence 0.25), and the praise rate and talk share are still reported.
+
+**Caveats.** After reweighting, "Structure & clarity" on a clip rests on only two items (comprehension checks and longest monologue), so it is a thin dimension there. The 20-minute and 10-minute thresholds are conventions: a 25-minute lesson that is genuinely short would be treated as complete. A clip whose transcript timestamps are re-based to 0:00 can only be caught by its duration.
+
+## 8. Limitations to state plainly
 
 Calibrated on 8 labelled classes (2 per label); keyword cues on machine transcripts; tone, friendliness and the 8x8 background itself are **not** measured; the teacher's face is a small tile so face signals are coarse; Malayalam is not handled by either ASR (see section 6), so wording cues switch off there; the speaker split without a VTT is only about 70% right; the Docker/Space deployment and the Streamlit Cloud deployment have not been run.

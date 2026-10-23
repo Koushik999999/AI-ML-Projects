@@ -4,6 +4,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
+from src.scoring.partial import partial_info
 from src.scoring.technical import fmt_t
 
 T = fmt_t
@@ -51,6 +52,8 @@ def observations(f: dict, names: list[str] | None = None, teacher: str | None = 
     names = names or []
     obs: list[Observation] = []
     if t.get("ok") and t.get("has_speakers"):
+        part = partial_info(f)                              # a clip has no opening/closing to judge: see src/scoring/partial.py
+        open_ok, close_ok = not part.skip_opening, not part.skip_closing
         role_ok = not t.get("speakers_approximate")       # who-said-what is trustworthy only with real speaker labels
         lex_ok = t.get("lexicon_reliable", True)           # wording cues are meaningless on garbled / non-English transcripts
         ev = t["evidence"]
@@ -76,7 +79,7 @@ def observations(f: dict, names: list[str] | None = None, teacher: str | None = 
                                    f"No child spoke for {L / 60:.1f} min between {T(ss['start'])} and {T(ss['end'])}.",
                                    ss["start"], "Call a child by name every 2-3 minutes, even during demonstrations."))
         fs = t.get("first_student_after_s")
-        if role_ok and fs is not None and fs > 150:
+        if role_ok and open_ok and fs is not None and fs > 150:
             obs.append(Observation("Rapport & opening", "issue", min(1, fs / 600),
                                    f"The first child spoke {fs / 60:.1f} min after the class began (at {T(t['session_start_s'] + fs)}).",
                                    t["session_start_s"], "Open with a quick round: ask each child one easy personal or recap question in the first 2 minutes."))
@@ -93,15 +96,15 @@ def observations(f: dict, names: list[str] | None = None, teacher: str | None = 
             obs.append(Observation("Individual interaction", "issue", 0.55,
                                    f"{t['n_unanswered_questions']} teacher questions got no spoken reply within 20 s, e.g. {_q(ux[1], names, teacher)} at {T(ux[0])}.",
                                    ux[0], "Wait 5 s after a question and re-address it to a named child before moving on."))
-        if lex_ok and not t["has_rapport"]:
+        if lex_ok and open_ok and not t["has_rapport"]:
             q0 = ev["greet"][0] if ev["greet"] else None
             obs.append(Observation("Rapport & opening", "issue", 0.6,
                                    "No rapport-building check-in ('how are you / how was your day') was found in the opening minutes" + (f"; the class opened with {_q(q0[1], names, teacher)} at {T(q0[0])}." if q0 else "."),
                                    q0[0] if q0 else None, "Spend the first 2-3 minutes on a friendly check-in before revising or teaching."))
-        if lex_ok and not t["has_homework"]:
+        if lex_ok and close_ok and not t["has_homework"]:
             obs.append(Observation("Structure & clarity", "issue", 0.5, "No homework was assigned (no mention of homework/assignment anywhere in the transcript).", None,
                                    "End every class by assigning a small homework task and saying it out loud."))
-        if lex_ok and not t["has_closing"] and not t["has_recap"]:
+        if lex_ok and close_ok and not t["has_closing"] and not t["has_recap"]:
             obs.append(Observation("Structure & clarity", "issue", 0.5, "The class ended without a recap or a closing (no summary of what was learned, no goodbye/next-class line in the last 15%).", t["session_end_s"],
                                    "Reserve the last 3 minutes: 'today we learned...', homework, goodbye."))
         if lex_ok and t["praise_per_10min"] < 2.0:
@@ -117,13 +120,13 @@ def observations(f: dict, names: list[str] | None = None, teacher: str | None = 
         if lex_ok and t["praise_per_10min"] >= 5 and ev["praise"]:
             p = ev["praise"][0]
             obs.append(Observation("Energy & positivity", "strength", 0.7, f"Frequent encouragement ({t['praise_count']} praise phrases, e.g. {_q(p[1], names, teacher)} at {T(p[0])}).", p[0]))
-        if lex_ok and t["has_rapport"] and ev["rapport"]:
+        if lex_ok and open_ok and t["has_rapport"] and ev["rapport"]:
             r = ev["rapport"][0]
             obs.append(Observation("Rapport & opening", "strength", 0.6, f"Warm opening with a personal check-in at {T(r[0])}: {_q(r[1], names, teacher)}.", r[0]))
-        if lex_ok and t["has_homework"] and ev["homework"]:
+        if lex_ok and close_ok and t["has_homework"] and ev["homework"]:
             h = ev["homework"][0]
             obs.append(Observation("Structure & clarity", "strength", 0.5, f"Homework was assigned at {T(h[0])}: {_q(h[1], names, teacher)}.", h[0]))
-        if lex_ok and t["has_recap"] and t["has_closing"]:
+        if lex_ok and close_ok and t["has_recap"] and t["has_closing"]:
             obs.append(Observation("Structure & clarity", "strength", 0.45, f"Clear structure: recap at {T(ev['recap'][0][0])} and a proper close at {T(ev['closing'][0][0])}.", ev["recap"][0][0]))
         if lex_ok and t["check_per_10min"] >= 8:
             c = ev["check"][0]

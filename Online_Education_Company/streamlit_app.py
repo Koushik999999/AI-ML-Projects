@@ -154,7 +154,7 @@ def _render(res: dict) -> None:
         for d, items in sc["items"].items():
             st.markdown(f"**{d}** — {sc['dimensions'][d] if sc['dimensions'][d] is not None else 'n/a'}")
             for it in items:
-                s = "n/a" if it["score"] is None else f"{it['score'] * 100:.0f}"
+                s = "not assessable on a partial recording" if it.get("not_assessable") else ("n/a" if it["score"] is None else f"{it['score'] * 100:.0f}")
                 st.caption(f"{it['item']} (weight {it['weight']}): {s} — {it['why']}")
     st.caption("Limitations: calibrated on 8 labelled classes only; keyword-based pedagogy detection on machine-made transcripts (names and Malayalam are often garbled); "
                "video checks are coarse. Use it as a first-pass, evidence-based triage, not a final judgement.")

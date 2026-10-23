@@ -36,6 +36,11 @@ def assess(features: dict) -> dict:
     unavailable = list(features.get("unavailable", []))
     if tech["exclude_presentation"]:
         notes.append("Heavy platform faults were detected, so the 'Presentation' dimension was excluded from the score (the teacher is not penalised for them).")
+    part = s.partial
+    if part.is_partial:
+        notes.insert(0, "This looks like a PARTIAL class: " + "; ".join(part.reasons) + ". Opening-only and closing-only checks ("
+                     + ", ".join(part.not_assessable) + ") are marked not assessable and left out of the score; the remaining dimensions were "
+                     "reweighted and confidence was lowered. Per-minute signals (praise rate, talk balance, silences) are still used.")
     if t.get("ok") and not t.get("lexicon_reliable", True):
         notes.append("The transcript is mostly non-English or garbled (typical for machine transcripts of Malayalam speech), so wording-based checks "
                      "(rapport, praise, homework, recap, closing) were switched off; talk balance, turn-taking and audio/video signals were still used.")
@@ -48,6 +53,7 @@ def assess(features: dict) -> dict:
         "technical": tech,
         "notes": notes,
         "unavailable": unavailable,
+        "partial": {"is_partial": part.is_partial, "reasons": list(part.reasons), "not_assessable": part.not_assessable},
         "speakers_approximate": bool(t.get("speakers_approximate")),
         "features": features,
         "names": names,

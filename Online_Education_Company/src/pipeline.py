@@ -69,7 +69,7 @@ def analyze(video: str | Path, vtt: str | Path | None = None, *, use_cache: bool
     cap_s = max_minutes * 60 if max_minutes else None
     if cap_s and info.duration > cap_s:
         warnings.append(f"Recording is {info.duration / 60:.0f} min; only the first {max_minutes:.0f} min were analysed.")
-    media = {"duration_s": info.duration, "width": info.width, "height": info.height, "fps": info.fps,
+    media = {"truncated": bool(cap_s and info.duration > cap_s), "duration_s": info.duration, "width": info.width, "height": info.height, "fps": info.fps,
              "audio_channels": info.audio_channels, "sample_rate": info.sample_rate,
              "has_video": info.has_video, "has_audio": info.has_audio}
 

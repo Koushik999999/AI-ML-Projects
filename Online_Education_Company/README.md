@@ -77,6 +77,13 @@ and the confidence is lowered. If the speech model cannot load, the app still re
 On two full test classes the verdict was unchanged without the transcript (Excellent, Poor), at lower confidence. Malayalam speech is
 not handled by the small Whisper models (they write Tamil script); wording checks switch off automatically.
 
+## Partial recordings
+
+A recording under 20 minutes, one whose first speech is after 10 minutes, or one cut short by the analysis cap is treated as a
+partial class: opening-only and closing-only checks (rapport check-in, greeting, new-joiner intro, homework, recap, goodbye) are marked
+"not assessable", left out of the score, and the result carries a banner and a lower confidence. Per-minute signals still count
+(`src/scoring/partial.py`, `docs/findings.md` section 7).
+
 ## Hosting
 
 See `docs/hosting.md`: Streamlit Community Cloud (subfolder entrypoint) and a Hugging Face Docker Space built from a
