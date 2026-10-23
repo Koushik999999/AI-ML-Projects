@@ -73,8 +73,8 @@ def test_anonymise_removes_names():
 
 
 def test_anonymise_redacts_asr_mangled_names():
-    out = anonymise("YUVAN KOLECO, are you there? Hello Priya, good job Ravi! Okay let us start.", ["Ravi Kumar"], "Ms T")
-    assert "YUVAN" not in out and "Priya" not in out and "Ravi" not in out
+    out = anonymise("ZORBA MENDLE, are you there? Hello Priya, good job Ravi! Okay let us start.", ["Ravi Kumar"], "Ms T")
+    assert "ZORBA" not in out and "Priya" not in out and "Ravi" not in out
     assert "let us start" in out  # ordinary words are untouched
 
 
