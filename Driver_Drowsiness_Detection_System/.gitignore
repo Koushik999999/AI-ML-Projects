@@ -1,0 +1,22 @@
+# data (not redistributed) and large / regenerable artefacts
+dataset/
+dataset.zip
+__MACOSX/
+.venv/
+__pycache__/
+cache/
+runs/
+*.keras
+outputs/saved_model/
+.ipynb_checkpoints/
+*.egg-info/
+.pytest_cache/
+
+# the repository-level .gitignore ignores *.png, *.txt, *.npy, ...: re-include what belongs to this project
+!requirements.txt
+!assets/*.png
+!models/*.tflite
+!models/metadata.json
+Case Study_ Driver Drowsiness Detection System_Approach_Document.pdf
+Case Study_ Driver Drowsiness Detection System.pdf
+Driver_Drowsiness_Detection.ipynb

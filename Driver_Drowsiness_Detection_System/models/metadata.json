@@ -1,0 +1,17 @@
+{
+  "model_file": "drowsiness_float16.tflite",
+  "class_names": ["non_drowsy", "drowsy"],
+  "positive_class": "drowsy",
+  "threshold": 0.14,
+  "threshold_rule": "maximise validation recall subject to validation precision >= 0.95; ties -> highest threshold",
+  "img_size": 128,
+  "detector": "dlib",
+  "face_pad": 0.25,
+  "face_margin": 0.10,
+  "interpolation": "INTER_AREA",
+  "color_order": "RGB",
+  "input_scaling": "uint8 / 255 -> float32 in [0, 1] (the model rescales to [-1, 1] internally)",
+  "output": "sigmoid P(drowsy)",
+  "smooth_window": 10,
+  "provenance": "float16 TFLite model exported from the executed notebook (notebooks/Driver_Drowsiness_Detection.ipynb); threshold 0.14 was chosen on the validation set"
+}

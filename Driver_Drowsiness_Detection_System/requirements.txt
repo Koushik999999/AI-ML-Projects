@@ -1,0 +1,11 @@
+# Python 3.10. Versions are the ones used for the reported results.
+tensorflow==2.16.2
+keras==3.3.3
+opencv-python==4.10.0.84
+dlib-bin==20.0.1      # prebuilt wheel; plain `dlib` needs CMake and a C++ compiler
+numpy==1.26.4
+pandas==2.3.3
+scikit-learn==1.7.2
+matplotlib==3.10.8
+seaborn==0.13.2
+pytest>=8            # only needed to run the tests
