@@ -1,0 +1,12 @@
+# Example Ultralytics dataset config. `python scripts/audit_dataset.py --root data --clean`
+# writes a ready-to-use data/data.yaml for you; copy this file only if you prefer to write it by hand.
+#
+# Expected layout under `path`:
+#   images/{train,val,test}/*.jpg
+#   labels/{train,val,test}/*.txt     # one line per plate: "0 cx cy w h" (normalised 0-1)
+path: /absolute/path/to/data   # use an absolute path
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: license_plate

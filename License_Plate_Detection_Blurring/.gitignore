@@ -1,0 +1,16 @@
+# data, training runs and large / regenerable artefacts
+data/
+data_removed/
+runs/
+*.pt
+*.mp4
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# the repository-level .gitignore ignores *.png, *.jpg and *.txt: re-include what belongs to this project
+!requirements.txt
+!demo/requirements.txt
+!docs/results/*.png
+!docs/assets/*.png

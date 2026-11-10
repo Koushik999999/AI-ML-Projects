@@ -1,0 +1,12 @@
+# Minimum versions. The notebook ran with ultralytics 8.4.208, torch 2.14.1, opencv 4.14.0 (Colab, Tesla T4).
+numpy>=1.24
+pandas>=2.0
+opencv-python>=4.8
+Pillow>=10.0
+PyYAML>=6.0
+matplotlib>=3.7
+ultralytics>=8.3.0
+# only needed for the OCR leak check (scripts/evaluate.py --ocr)
+easyocr>=1.7
+# tests (no dataset, weights or GPU needed)
+pytest>=8.0
